@@ -322,6 +322,9 @@ void yyfree ( void *  );
 #define YY_AT_BOL() (YY_CURRENT_BUFFER_LVALUE->yy_at_bol)
 
 /* Begin user sect3 */
+
+#define yywrap() (/*CONSTCOND*/1)
+#define YY_SKIP_YYWRAP
 typedef flex_uint8_t YY_CHAR;
 
 FILE *yyin = NULL, *yyout = NULL;
@@ -351,8 +354,8 @@ static void yynoreturn yy_fatal_error ( const char* msg  );
 	(yy_hold_char) = *yy_cp; \
 	*yy_cp = '\0'; \
 	(yy_c_buf_p) = yy_cp;
-#define YY_NUM_RULES 4
-#define YY_END_OF_BUFFER 5
+#define YY_NUM_RULES 7
+#define YY_END_OF_BUFFER 8
 /* This struct is not used in this scanner,
    but its presence is necessary. */
 struct yy_trans_info
@@ -360,9 +363,10 @@ struct yy_trans_info
 	flex_int32_t yy_verify;
 	flex_int32_t yy_nxt;
 	};
-static const flex_int16_t yy_accept[9] =
+static const flex_int16_t yy_accept[13] =
     {   0,
-        0,    0,    5,    2,    3,    1,    1,    0
+        0,    0,    8,    5,    6,    4,    2,    1,    5,    1,
+        3,    0
     } ;
 
 static const YY_CHAR yy_ec[256] =
@@ -370,16 +374,16 @@ static const YY_CHAR yy_ec[256] =
         1,    1,    1,    1,    1,    1,    1,    1,    1,    2,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-        1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-        1,    1,    1,    1,    1,    1,    1,    3,    3,    3,
-        3,    3,    3,    3,    3,    3,    3,    1,    1,    1,
-        1,    1,    1,    1,    3,    3,    3,    3,    3,    3,
-        1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-        1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
+        1,    1,    1,    1,    1,    1,    1,    1,    1,    3,
+        3,    4,    4,    1,    4,    1,    4,    5,    5,    5,
+        5,    5,    5,    5,    5,    5,    5,    1,    1,    1,
+        1,    1,    1,    4,    1,    1,    1,    1,    1,    1,
+        1,    1,    1,    1,    1,    1,    6,    1,    1,    1,
+        1,    1,    1,    1,    7,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
 
-        1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-        1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
+        1,    1,    1,    1,    1,    1,    1,    1,    8,    1,
+        1,    1,    1,    1,    1,    1,    9,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
@@ -397,29 +401,35 @@ static const YY_CHAR yy_ec[256] =
         1,    1,    1,    1,    1
     } ;
 
-static const YY_CHAR yy_meta[4] =
+static const YY_CHAR yy_meta[10] =
     {   0,
-        1,    1,    2
+        1,    1,    1,    1,    1,    1,    1,    1,    1
     } ;
 
-static const flex_int16_t yy_base[10] =
+static const flex_int16_t yy_base[13] =
     {   0,
-        0,    0,    5,    6,    6,    0,    0,    6,    2
+        0,    0,   14,   15,   15,   15,   15,    8,    4,    6,
+       15,   15
     } ;
 
-static const flex_int16_t yy_def[10] =
+static const flex_int16_t yy_def[13] =
     {   0,
-        8,    1,    8,    8,    8,    9,    9,    0,    8
+       12,    1,   12,   12,   12,   12,   12,   12,   12,   12,
+       12,    0
     } ;
 
-static const flex_int16_t yy_nxt[10] =
+static const flex_int16_t yy_nxt[25] =
     {   0,
-        4,    5,    6,    7,    8,    3,    8,    8,    8
+        4,    5,    6,    7,    8,    4,    9,    4,    9,   11,
+       10,   11,   10,   12,    3,   12,   12,   12,   12,   12,
+       12,   12,   12,   12
     } ;
 
-static const flex_int16_t yy_chk[10] =
+static const flex_int16_t yy_chk[25] =
     {   0,
-        1,    1,    1,    9,    3,    8,    8,    8,    8
+        1,    1,    1,    1,    1,    1,    1,    1,    1,    9,
+       10,    9,    8,    3,   12,   12,   12,   12,   12,   12,
+       12,   12,   12,   12
     } ;
 
 static yy_state_type yy_last_accepting_state;
@@ -436,14 +446,35 @@ int yy_flex_debug = 0;
 #define YY_MORE_ADJ 0
 #define YY_RESTORE_YY_MORE_OFFSET
 char *yytext;
-#line 1 "HexToDec.l"
-/* HEX to DEC */
-#line 4 "HexToDec.l"
-
-int toInt(char* str);
-
-#line 446 "lex.yy.c"
-#line 447 "lex.yy.c"
+#line 1 "infix_to_expression_tree.l"
+/* an implmentation of infix to postfix using lex specifications */
+#line 6 "infix_to_expression_tree.l"
+	#define MAX 500
+	#include <math.h>
+	struct btnode
+	{
+		int type;
+		void* ele;
+		struct btnode* left,*right;
+	};
+	struct stack
+	{
+		int top;
+		int type[MAX];
+		void* elements[MAX];
+	};
+	struct stack s,s1;
+	void push(struct stack* s,void* token,int t1);
+	void* pop(struct stack* s);
+	int precedance(char* op);
+	void insert_operand(int token);
+	void insert_operator(char* token);
+	void handle_braces(char* token);
+	void print_stack(struct stack* s);
+	void create(char* op);
+	int eval(struct btnode* t);
+#line 477 "lex.yy.c"
+#line 478 "lex.yy.c"
 
 #define INITIAL 0
 
@@ -660,10 +691,10 @@ YY_DECL
 		}
 
 	{
-#line 9 "HexToDec.l"
+#line 32 "infix_to_expression_tree.l"
 
 
-#line 667 "lex.yy.c"
+#line 698 "lex.yy.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -690,13 +721,13 @@ yy_match:
 			while ( yy_chk[yy_base[yy_current_state] + yy_c] != yy_current_state )
 				{
 				yy_current_state = (int) yy_def[yy_current_state];
-				if ( yy_current_state >= 9 )
+				if ( yy_current_state >= 13 )
 					yy_c = yy_meta[yy_c];
 				}
 			yy_current_state = yy_nxt[yy_base[yy_current_state] + yy_c];
 			++yy_cp;
 			}
-		while ( yy_base[yy_current_state] != 6 );
+		while ( yy_base[yy_current_state] != 15 );
 
 yy_find_action:
 		yy_act = yy_accept[yy_current_state];
@@ -722,26 +753,38 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 11 "HexToDec.l"
-{printf("%d\n",toInt(yytext));}
+#line 34 "infix_to_expression_tree.l"
+{ printf("%s\n",yytext);insert_operand(atoi(yytext));print_stack(&s);}
 	YY_BREAK
 case 2:
-YY_RULE_SETUP
-#line 12 "HexToDec.l"
-
-	YY_BREAK
+#line 36 "infix_to_expression_tree.l"
 case 3:
-/* rule 3 can match eol */
 YY_RULE_SETUP
-#line 13 "HexToDec.l"
-
+#line 36 "infix_to_expression_tree.l"
+{ printf("%s\n",yytext);insert_operator(yytext);print_stack(&s);}
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 14 "HexToDec.l"
-ECHO;
+#line 37 "infix_to_expression_tree.l"
+{ printf("%s\n",yytext);handle_braces(yytext);print_stack(&s);}
 	YY_BREAK
-#line 745 "lex.yy.c"
+case 5:
+YY_RULE_SETUP
+#line 38 "infix_to_expression_tree.l"
+/* ignore */
+	YY_BREAK
+case 6:
+/* rule 6 can match eol */
+YY_RULE_SETUP
+#line 39 "infix_to_expression_tree.l"
+/* ignore */
+	YY_BREAK
+case 7:
+YY_RULE_SETUP
+#line 41 "infix_to_expression_tree.l"
+YY_FATAL_ERROR( "flex scanner jammed" );
+	YY_BREAK
+#line 788 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1038,7 +1081,7 @@ static int yy_get_next_buffer (void)
 		while ( yy_chk[yy_base[yy_current_state] + yy_c] != yy_current_state )
 			{
 			yy_current_state = (int) yy_def[yy_current_state];
-			if ( yy_current_state >= 9 )
+			if ( yy_current_state >= 13 )
 				yy_c = yy_meta[yy_c];
 			}
 		yy_current_state = yy_nxt[yy_base[yy_current_state] + yy_c];
@@ -1066,11 +1109,11 @@ static int yy_get_next_buffer (void)
 	while ( yy_chk[yy_base[yy_current_state] + yy_c] != yy_current_state )
 		{
 		yy_current_state = (int) yy_def[yy_current_state];
-		if ( yy_current_state >= 9 )
+		if ( yy_current_state >= 13 )
 			yy_c = yy_meta[yy_c];
 		}
 	yy_current_state = yy_nxt[yy_base[yy_current_state] + yy_c];
-	yy_is_jam = (yy_current_state == 8);
+	yy_is_jam = (yy_current_state == 12);
 
 		return yy_is_jam ? 0 : yy_current_state;
 }
@@ -1746,27 +1789,243 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 14 "HexToDec.l"
+#line 41 "infix_to_expression_tree.l"
 
 
-int toInt(char* str)
+void push(struct stack* s,void* token,int t1)
 {
-	char* p;
-	p = str;
-	int i = 0;
-	while(*p!='\0'&&*p=='0')
-	p++;
-	while(*p!='\0')
+	if(s->top==MAX-1)
 	{
-		i = (i*16)+(((*p>='0')&&(*p<='9'))?(*p-'0'):(*p-'A'+10));
-		p++;
-	}	
-	return i;
+		printf("Stack overflow\n");
+		exit(0);
+	}
+	else
+	{
+		s->top++;
+		s->type[s->top] = t1;
+		if(t1==1)
+		{
+			s->elements[s->top] = NULL;
+			s->elements[s->top] = (void*)malloc(sizeof(char));
+			strcpy((char*)s->elements[s->top],token);
+		}
+		else
+		{
+			s->elements[s->top] = NULL;
+			s->elements[s->top] = (void*)token;
+		}
+	}
 }
 
-int main()
+void* pop(struct stack* s)
 {
+	return s->elements[s->top--];
+}
+
+void print_stack(struct stack* s)
+{
+	printf("stack = ");
+	for(int i=0;i<=s->top;i++)
+	{
+		printf("%s ",(char*)s->elements[i]);
+	}
+	printf("\n");
+}
+
+int precedance(char* op)
+{
+	if(!strcmp(op,"um"))
+	return 1;
+	else if(!strcmp(op,"@"))
+	return 2;
+	else if(!strcmp(op,"/"))
+	return 3;
+	else if(!strcmp(op,"*"))
+	return 4;
+	else if(!strcmp(op,"+"))
+	return 5;
+	else if(!strcmp(op,"-"))
+	return 6;
+	else
+	return 100;
+}
+
+void insert_operand(int token)
+{
+	struct btnode* t;
+	t = NULL;
+	t = (struct btnode*)malloc(sizeof(struct btnode));
+	t->type = 1;
+	t->left = NULL;
+	t->right = NULL;
+	t->ele = NULL;
+	t->ele = (int*)malloc(sizeof(int));
+	*(int*)(t->ele) = token;
+	push(&s1,t,2);
+}
+
+void create(char* op)
+{
+	struct btnode* t1,*t2,*t;
+	if(strcmp(op,"um")==0)
+	{
+		t1 = (struct btnode*)pop(&s1);
+		t = NULL;
+		t = (struct btnode*)malloc(sizeof(struct btnode));
+		t->type = 2;
+		t->left = t1;
+		t->right = NULL;
+		t->ele = NULL;
+		t->ele = (char*)malloc(sizeof(char));
+	}
+	else
+	{
+		t1 = (struct btnode*)pop(&s1);
+		t2 = (struct btnode*)pop(&s1);
+		t = NULL;
+		t = (struct btnode*)malloc(sizeof(struct btnode));
+		t->type = 2;
+		t->left = t2;
+		t->right = t1;
+		t->ele = NULL;
+		t->ele = (char*)malloc(sizeof(char));
+	}
+	strcpy((char*)(t->ele),op);
+	push(&s1,(void*)t,2);
+}
+
+void insert_operator(char* token)
+{
+	int p = precedance(token),p1,f;
+	f = (int)(strcmp(token,"@")==0);
+	while(s.top!=-1&&(p1 = precedance((char*)s.elements[s.top]))<=p)
+	{
+		if(f&&p1==p)
+		break;
+		create((char*)pop(&s));
+		free(s.elements[s.top+1]);
+	}
+	push(&s,token,1);
+}
+
+void handle_braces(char* token)
+{
+	if(strcmp(token,"(")==0)
+	{
+		push(&s,token,1);
+	}
+	else
+	{
+		while(s.top!=-1&&strcmp((char*)s.elements[s.top],"(")!=0)
+		{
+			create((char*)pop(&s));
+			free(s.elements[s.top+1]);
+		}
+		if(s.top==-1)
+		{
+			printf("Paranthesis mismatch\n");
+			exit(0);
+		}
+		else
+		{
+			pop(&s);
+		}
+	}
+}
+
+void* column_wise_printing(struct btnode* t,int s)
+{
+	if(t!=NULL)
+	{
+		if(t->type==1)
+		{
+			for(int i=0;i<s;i++)
+				printf(" ");
+			printf("%d\n",(*(int*)(t->ele)));
+		}
+		else
+		{
+			for(int i=0;i<s;i++)
+				printf(" ");
+			printf("%s\n",(char*)(t->ele));
+			column_wise_printing(t->left,s+5);
+			column_wise_printing(t->right,s+5);
+		}
+	}
+}
+
+void postorder(struct btnode* t)
+{
+	if(t!=NULL)
+	{
+		if(t->type==1)
+		{
+			printf("%d ",(*(int*)(t->ele)));
+		}
+		else
+		{
+			postorder(t->left);
+			postorder(t->right);
+			printf("%s ",(char*)(t->ele));
+		}
+	}
+}
+
+int eval(struct btnode* t)
+{
+	if(t!=NULL)
+	{
+		if(t->type==1)
+		{
+			return *(int*)(t->ele);
+		}
+		else
+		{
+			int l = eval(t->left);
+			int r = eval(t->right);
+			if(!strcmp((char*)t->ele,"um"))
+			return --l;
+			else if(!strcmp((char*)t->ele,"@"))
+			return (int)pow(l,r);
+			else if(!strcmp((char*)t->ele,"/"))
+			return (l/r);
+			else if(!strcmp((char*)t->ele,"*"))
+			return (l*r);
+			else if(!strcmp((char*)t->ele,"+"))
+			return (l+r);
+			else if(!strcmp((char*)t->ele,"-"))
+			return (l-r);
+			else
+			return 0;
+		}
+	}
+	return 0;
+}
+
+
+int main(int argc,char* argv[])
+{
+	s.top = s1.top = -1;
+	if(argc>1)
+	{
+		yyin = fopen(argv[1],"r");
+		if(yyin==NULL)
+		{
+			perror("File not opened");
+			exit(0);
+		}
+	}
 	yylex();
+	while(s.top!=-1)
+	{
+		create(pop(&s));
+	}
+	struct btnode* t = (struct btnode*)pop(&s1);
+	printf("The expression tree = \n");
+	column_wise_printing(t,0);
+	printf("The postfix expression = ");
+	postorder(t);
+	printf("\nValue of expression = %d\n",eval(t));
 	return 0;
 }
 

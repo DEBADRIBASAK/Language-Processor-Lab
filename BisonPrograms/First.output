@@ -1,0 +1,177 @@
+Grammar
+
+    0 $accept: calclist $end
+
+    1 calclist: %empty
+    2         | calclist exp EOL
+
+    3 exp: factor
+    4    | exp ADD factor
+
+    5 factor: term
+    6       | factor MUL term
+
+    7 term: NUMBER
+    8     | OPBR exp CLBR
+
+
+Terminals, with rules where they appear
+
+$end (0) 0
+error (256)
+ADD (258) 4
+MUL (259) 6
+NUMBER (260) 7
+OPBR (261) 8
+CLBR (262) 8
+EOL (263) 2
+
+
+Nonterminals, with rules where they appear
+
+$accept (9)
+    on left: 0
+calclist (10)
+    on left: 1 2, on right: 0 2
+exp (11)
+    on left: 3 4, on right: 2 4 8
+factor (12)
+    on left: 5 6, on right: 3 4 6
+term (13)
+    on left: 7 8, on right: 5 6
+
+
+State 0
+
+    0 $accept: . calclist $end
+
+    $default  reduce using rule 1 (calclist)
+
+    calclist  go to state 1
+
+
+State 1
+
+    0 $accept: calclist . $end
+    2 calclist: calclist . exp EOL
+
+    $end    shift, and go to state 2
+    NUMBER  shift, and go to state 3
+    OPBR    shift, and go to state 4
+
+    exp     go to state 5
+    factor  go to state 6
+    term    go to state 7
+
+
+State 2
+
+    0 $accept: calclist $end .
+
+    $default  accept
+
+
+State 3
+
+    7 term: NUMBER .
+
+    $default  reduce using rule 7 (term)
+
+
+State 4
+
+    8 term: OPBR . exp CLBR
+
+    NUMBER  shift, and go to state 3
+    OPBR    shift, and go to state 4
+
+    exp     go to state 8
+    factor  go to state 6
+    term    go to state 7
+
+
+State 5
+
+    2 calclist: calclist exp . EOL
+    4 exp: exp . ADD factor
+
+    ADD  shift, and go to state 9
+    EOL  shift, and go to state 10
+
+
+State 6
+
+    3 exp: factor .
+    6 factor: factor . MUL term
+
+    MUL  shift, and go to state 11
+
+    $default  reduce using rule 3 (exp)
+
+
+State 7
+
+    5 factor: term .
+
+    $default  reduce using rule 5 (factor)
+
+
+State 8
+
+    4 exp: exp . ADD factor
+    8 term: OPBR exp . CLBR
+
+    ADD   shift, and go to state 9
+    CLBR  shift, and go to state 12
+
+
+State 9
+
+    4 exp: exp ADD . factor
+
+    NUMBER  shift, and go to state 3
+    OPBR    shift, and go to state 4
+
+    factor  go to state 13
+    term    go to state 7
+
+
+State 10
+
+    2 calclist: calclist exp EOL .
+
+    $default  reduce using rule 2 (calclist)
+
+
+State 11
+
+    6 factor: factor MUL . term
+
+    NUMBER  shift, and go to state 3
+    OPBR    shift, and go to state 4
+
+    term  go to state 14
+
+
+State 12
+
+    8 term: OPBR exp CLBR .
+
+    $default  reduce using rule 8 (term)
+
+
+State 13
+
+    4 exp: exp ADD factor .
+    6 factor: factor . MUL term
+
+    MUL  shift, and go to state 11
+
+    $default  reduce using rule 4 (exp)
+
+
+State 14
+
+    6 factor: factor MUL term .
+
+    $default  reduce using rule 6 (factor)
