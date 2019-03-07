@@ -16,7 +16,7 @@
 calclist: 
 	| calclist exp EOL {printf("The value is: %d\n",$2);}
 	;
-exp: NUM
+exp: NUM	
    | exp '*' exp { $$ = $1*$3;}
    | exp '/' exp { $$ = $1/$3;}
    | exp '+' exp { $$ = $1+$3;}
@@ -27,11 +27,13 @@ exp: NUM
 
 int main()
 {
+	yydebug = 1;
  	yyparse();
 	return 0;
 }
 int yyerror(char* s)
 {
+	yydebug = 1;
 	printf("ERROR: %s\n",s);
 	return 0;
 }

@@ -62,15 +62,14 @@
 
 
 /* Copy the first part of user declarations.  */
-#line 1 "BisonPractice.y" /* yacc.c:339  */
+#line 1 "Postfix.y" /* yacc.c:339  */
 
-	#include <stdio.h>
-	#include <stdlib.h>
-	#include <math.h>
-	int yyerror(char* s);
-	extern int yylex();
+#include <stdio.h>
+#include <stdlib.h>
+int yylex();
+int yyerror(char* s);
 
-#line 74 "BisonPractice.tab.c" /* yacc.c:339  */
+#line 73 "Postfix.tab.c" /* yacc.c:339  */
 
 # ifndef YY_NULLPTR
 #  if defined __cplusplus && 201103L <= __cplusplus
@@ -88,10 +87,13 @@
 # define YYERROR_VERBOSE 0
 #endif
 
-
+/* In a future release of Bison, this section will be replaced
+   by #include "Postfix.tab.h".  */
+#ifndef YY_YY_POSTFIX_TAB_H_INCLUDED
+# define YY_YY_POSTFIX_TAB_H_INCLUDED
 /* Debug traces.  */
 #ifndef YYDEBUG
-# define YYDEBUG 1
+# define YYDEBUG 0
 #endif
 #if YYDEBUG
 extern int yydebug;
@@ -119,11 +121,11 @@ extern YYSTYPE yylval;
 
 int yyparse (void);
 
-
+#endif /* !YY_YY_POSTFIX_TAB_H_INCLUDED  */
 
 /* Copy the second part of user declarations.  */
 
-#line 127 "BisonPractice.tab.c" /* yacc.c:358  */
+#line 129 "Postfix.tab.c" /* yacc.c:358  */
 
 #ifdef short
 # undef short
@@ -365,7 +367,7 @@ union yyalloc
 /* YYFINAL -- State number of the termination state.  */
 #define YYFINAL  2
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   17
+#define YYLAST   18
 
 /* YYNTOKENS -- Number of terminals.  */
 #define YYNTOKENS  10
@@ -392,11 +394,9 @@ static const yytype_uint8 yytranslate[] =
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
-       2,     2,     7,     5,     2,     6,     2,     8,     2,     2,
+       2,     2,     5,     3,     2,     4,     2,     6,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
-       2,     2,     2,     2,     9,     2,     2,     2,     2,     2,
-       2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
-       2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
+       2,     2,     2,     2,     7,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
@@ -413,14 +413,16 @@ static const yytype_uint8 yytranslate[] =
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
-       2,     2,     2,     2,     2,     2,     1,     2,     3,     4
+       2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
+       2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
+       2,     2,     2,     2,     2,     2,     1,     2,     8,     9
 };
 
 #if YYDEBUG
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    16,    16,    17,    19,    20,    21,    22,    23,    24
+       0,    13,    13,    14,    15,    16,    17,    18,    19,    20
 };
 #endif
 
@@ -429,8 +431,8 @@ static const yytype_uint8 yyrline[] =
    First, the terminals, then, starting at YYNTOKENS, nonterminals.  */
 static const char *const yytname[] =
 {
-  "$end", "error", "$undefined", "NUM", "EOL", "'+'", "'-'", "'*'", "'/'",
-  "'@'", "$accept", "calclist", "exp", YY_NULLPTR
+  "$end", "error", "$undefined", "'+'", "'-'", "'*'", "'/'", "'@'", "NUM",
+  "EOL", "$accept", "calclist", "exp", YY_NULLPTR
 };
 #endif
 
@@ -439,14 +441,14 @@ static const char *const yytname[] =
    (internal) symbol number NUM (which must be that of a token).  */
 static const yytype_uint16 yytoknum[] =
 {
-       0,   256,   257,   258,   259,    43,    45,    42,    47,    64
+       0,   256,   257,    43,    45,    42,    47,    64,   258,   259
 };
 # endif
 
-#define YYPACT_NINF -5
+#define YYPACT_NINF -3
 
 #define yypact_value_is_default(Yystate) \
-  (!!((Yystate) == (-5)))
+  (!!((Yystate) == (-3)))
 
 #define YYTABLE_NINF -1
 
@@ -457,8 +459,8 @@ static const yytype_uint16 yytoknum[] =
      STATE-NUM.  */
 static const yytype_int8 yypact[] =
 {
-      -5,    11,    -5,    -5,    -4,    -5,     9,     9,     9,     9,
-       9,     8,     8,     4,     4,     4
+      -3,     0,    -3,    -3,    -2,    10,    10,    10,    10,    10,
+      -3,     9,     9,    -1,    -1,    -1
 };
 
   /* YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
@@ -466,14 +468,14 @@ static const yytype_int8 yypact[] =
      means the default is an error.  */
 static const yytype_uint8 yydefact[] =
 {
-       2,     0,     1,     4,     0,     3,     0,     0,     0,     0,
-       0,     7,     8,     5,     6,     9
+       2,     0,     1,     4,     0,     0,     0,     0,     0,     0,
+       3,     5,     6,     7,     8,     9
 };
 
   /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int8 yypgoto[] =
 {
-      -5,    -5,     0
+      -3,    -3,     4
 };
 
   /* YYDEFGOTO[NTERM-NUM].  */
@@ -487,21 +489,21 @@ static const yytype_int8 yydefgoto[] =
      number is the opposite.  If YYTABLE_NINF, syntax error.  */
 static const yytype_uint8 yytable[] =
 {
-       5,     6,     7,     8,     9,    10,    11,    12,    13,    14,
-      15,     2,     3,    10,     3,     8,     9,    10
+       2,     5,     6,     7,     8,     9,     9,    10,     3,    11,
+      12,    13,    14,    15,     7,     8,     9,     0,     3
 };
 
-static const yytype_uint8 yycheck[] =
+static const yytype_int8 yycheck[] =
 {
-       4,     5,     6,     7,     8,     9,     6,     7,     8,     9,
-      10,     0,     3,     9,     3,     7,     8,     9
+       0,     3,     4,     5,     6,     7,     7,     9,     8,     5,
+       6,     7,     8,     9,     5,     6,     7,    -1,     8
 };
 
   /* YYSTOS[STATE-NUM] -- The (internal number of the) accessing
      symbol of state STATE-NUM.  */
 static const yytype_uint8 yystos[] =
 {
-       0,    11,     0,     3,    12,     4,     5,     6,     7,     8,
+       0,    11,     0,     8,    12,     3,     4,     5,     6,     7,
        9,    12,    12,    12,    12,    12
 };
 
@@ -1191,43 +1193,49 @@ yyreduce:
   switch (yyn)
     {
         case 3:
-#line 17 "BisonPractice.y" /* yacc.c:1646  */
-    {printf("The value is: %d\n",(yyvsp[-1]));}
-#line 1197 "BisonPractice.tab.c" /* yacc.c:1646  */
+#line 14 "Postfix.y" /* yacc.c:1646  */
+    {printf("\n");}
+#line 1199 "Postfix.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 4:
+#line 15 "Postfix.y" /* yacc.c:1646  */
+    {printf("%d ",(yyvsp[0]));}
+#line 1205 "Postfix.tab.c" /* yacc.c:1646  */
     break;
 
   case 5:
-#line 20 "BisonPractice.y" /* yacc.c:1646  */
-    { (yyval) = (yyvsp[-2])*(yyvsp[0]);}
-#line 1203 "BisonPractice.tab.c" /* yacc.c:1646  */
+#line 16 "Postfix.y" /* yacc.c:1646  */
+    {printf("+ ");}
+#line 1211 "Postfix.tab.c" /* yacc.c:1646  */
     break;
 
   case 6:
-#line 21 "BisonPractice.y" /* yacc.c:1646  */
-    { (yyval) = (yyvsp[-2])/(yyvsp[0]);}
-#line 1209 "BisonPractice.tab.c" /* yacc.c:1646  */
+#line 17 "Postfix.y" /* yacc.c:1646  */
+    {printf("- ");}
+#line 1217 "Postfix.tab.c" /* yacc.c:1646  */
     break;
 
   case 7:
-#line 22 "BisonPractice.y" /* yacc.c:1646  */
-    { (yyval) = (yyvsp[-2])+(yyvsp[0]);}
-#line 1215 "BisonPractice.tab.c" /* yacc.c:1646  */
+#line 18 "Postfix.y" /* yacc.c:1646  */
+    {printf("* ");}
+#line 1223 "Postfix.tab.c" /* yacc.c:1646  */
     break;
 
   case 8:
-#line 23 "BisonPractice.y" /* yacc.c:1646  */
-    { (yyval) = (yyvsp[-2])-(yyvsp[0]);}
-#line 1221 "BisonPractice.tab.c" /* yacc.c:1646  */
+#line 19 "Postfix.y" /* yacc.c:1646  */
+    {printf("/ ");}
+#line 1229 "Postfix.tab.c" /* yacc.c:1646  */
     break;
 
   case 9:
-#line 24 "BisonPractice.y" /* yacc.c:1646  */
-    {(yyval) = (int)pow((yyvsp[-2]),(yyvsp[0]));}
-#line 1227 "BisonPractice.tab.c" /* yacc.c:1646  */
+#line 20 "Postfix.y" /* yacc.c:1646  */
+    {printf("^ ");}
+#line 1235 "Postfix.tab.c" /* yacc.c:1646  */
     break;
 
 
-#line 1231 "BisonPractice.tab.c" /* yacc.c:1646  */
+#line 1239 "Postfix.tab.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -1455,18 +1463,16 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 26 "BisonPractice.y" /* yacc.c:1906  */
+#line 22 "Postfix.y" /* yacc.c:1906  */
 
 
 int main()
 {
-	yydebug = 1;
- 	yyparse();
+	yyparse();
 	return 0;
 }
 int yyerror(char* s)
 {
-	yydebug = 1;
 	printf("ERROR: %s\n",s);
 	return 0;
 }

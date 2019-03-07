@@ -18,7 +18,7 @@
 }
 
 
-%token <d> NUM
+%token <d> NUM 
 %token <s> NAME
 %token <fn> FUNC
 %token IF THEN ELSE WHILE DO LET
@@ -530,7 +530,7 @@ static double calluser(struct ufncall *f)
 
 int main()
 {
-	//yydebug = 1;
+	yydebug = 1;
 	yyparse();
 	return 0;
 }

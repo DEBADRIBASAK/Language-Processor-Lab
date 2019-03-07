@@ -30,8 +30,8 @@
    This special exception was added by the Free Software Foundation in
    version 2.2 of Bison.  */
 
-#ifndef YY_YY_DESKCALC_TAB_H_INCLUDED
-# define YY_YY_DESKCALC_TAB_H_INCLUDED
+#ifndef YY_YY_SUBSETC_TAB_H_INCLUDED
+# define YY_YY_SUBSETC_TAB_H_INCLUDED
 /* Debug traces.  */
 #ifndef YYDEBUG
 # define YYDEBUG 0
@@ -45,27 +45,20 @@ extern int yydebug;
 # define YYTOKENTYPE
   enum yytokentype
   {
-    NUM = 258,
-    NAME = 259,
-    FUNC = 260,
-    IF = 261,
-    THEN = 262,
-    ELSE = 263,
-    WHILE = 264,
-    DO = 265,
-    LET = 266,
+    MAIN = 258,
+    DATATYPE = 259,
+    ID = 260,
+    INTEGER = 261,
+    FLOAT = 262,
+    ERR = 263,
+    LOG = 264,
+    ASSGN = 265,
+    BIT = 266,
     CMP = 267,
-    EQU = 268,
-    ADD = 269,
-    SUB = 270,
-    MUL = 271,
-    DIV = 272,
-    EXP = 273,
-    ABS = 274,
-    UM = 275,
-    EOL = 276,
-    OPBR = 277,
-    CLBR = 278
+    IF = 268,
+    ELSE = 269,
+    FOR = 270,
+    WHILE = 271
   };
 #endif
 
@@ -74,15 +67,14 @@ extern int yydebug;
 
 union YYSTYPE
 {
-#line 12 "DeskCalc.y" /* yacc.c:1909  */
+#line 18 "SubsetC.y" /* yacc.c:1909  */
 
 	struct ast* a;
 	double d;
-	struct symbol *s;
-	struct symlist *s1;
-	int fn;
+	struct symbol_table *s;
+	int assfn,logfn,bitfn,i,errfn,fn,dt;
 
-#line 86 "DeskCalc.tab.h" /* yacc.c:1909  */
+#line 78 "SubsetC.tab.h" /* yacc.c:1909  */
 };
 
 typedef union YYSTYPE YYSTYPE;
@@ -95,4 +87,4 @@ extern YYSTYPE yylval;
 
 int yyparse (void);
 
-#endif /* !YY_YY_DESKCALC_TAB_H_INCLUDED  */
+#endif /* !YY_YY_SUBSETC_TAB_H_INCLUDED  */

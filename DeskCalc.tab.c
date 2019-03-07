@@ -90,13 +90,10 @@
 # define YYERROR_VERBOSE 0
 #endif
 
-/* In a future release of Bison, this section will be replaced
-   by #include "DeskCalc.tab.h".  */
-#ifndef YY_YY_DESKCALC_TAB_H_INCLUDED
-# define YY_YY_DESKCALC_TAB_H_INCLUDED
+
 /* Debug traces.  */
 #ifndef YYDEBUG
-# define YYDEBUG 0
+# define YYDEBUG 1
 #endif
 #if YYDEBUG
 extern int yydebug;
@@ -145,7 +142,7 @@ union YYSTYPE
 	struct symlist *s1;
 	int fn;
 
-#line 149 "DeskCalc.tab.c" /* yacc.c:355  */
+#line 146 "DeskCalc.tab.c" /* yacc.c:355  */
 };
 
 typedef union YYSTYPE YYSTYPE;
@@ -158,11 +155,11 @@ extern YYSTYPE yylval;
 
 int yyparse (void);
 
-#endif /* !YY_YY_DESKCALC_TAB_H_INCLUDED  */
+
 
 /* Copy the second part of user declarations.  */
 
-#line 166 "DeskCalc.tab.c" /* yacc.c:358  */
+#line 163 "DeskCalc.tab.c" /* yacc.c:358  */
 
 #ifdef short
 # undef short
@@ -1284,55 +1281,55 @@ yyreduce:
         case 2:
 #line 43 "DeskCalc.y" /* yacc.c:1646  */
     { (yyval.a)  = newcmp((yyvsp[-1].fn),(yyvsp[-2].a),(yyvsp[0].a));}
-#line 1288 "DeskCalc.tab.c" /* yacc.c:1646  */
+#line 1285 "DeskCalc.tab.c" /* yacc.c:1646  */
     break;
 
   case 3:
 #line 44 "DeskCalc.y" /* yacc.c:1646  */
     { (yyval.a) = newast(ADD,(struct ast*)(yyvsp[-2].a),(struct ast*)(yyvsp[0].a));}
-#line 1294 "DeskCalc.tab.c" /* yacc.c:1646  */
+#line 1291 "DeskCalc.tab.c" /* yacc.c:1646  */
     break;
 
   case 4:
 #line 45 "DeskCalc.y" /* yacc.c:1646  */
     { (yyval.a) = newast(SUB,(struct ast*)(yyvsp[-2].a),(struct ast*)(yyvsp[0].a));}
-#line 1300 "DeskCalc.tab.c" /* yacc.c:1646  */
+#line 1297 "DeskCalc.tab.c" /* yacc.c:1646  */
     break;
 
   case 5:
 #line 46 "DeskCalc.y" /* yacc.c:1646  */
     { (yyval.a) = newast(MUL,(struct ast*)(yyvsp[-2].a),(struct ast*)(yyvsp[0].a));}
-#line 1306 "DeskCalc.tab.c" /* yacc.c:1646  */
+#line 1303 "DeskCalc.tab.c" /* yacc.c:1646  */
     break;
 
   case 6:
 #line 47 "DeskCalc.y" /* yacc.c:1646  */
     { (yyval.a) = newast(DIV,(struct ast*)(yyvsp[-2].a),(struct ast*)(yyvsp[0].a));}
-#line 1312 "DeskCalc.tab.c" /* yacc.c:1646  */
+#line 1309 "DeskCalc.tab.c" /* yacc.c:1646  */
     break;
 
   case 7:
 #line 48 "DeskCalc.y" /* yacc.c:1646  */
     {(yyval.a) = newast(EXP,(struct ast*)(yyvsp[-2].a),(struct ast*)(yyvsp[0].a));}
-#line 1318 "DeskCalc.tab.c" /* yacc.c:1646  */
+#line 1315 "DeskCalc.tab.c" /* yacc.c:1646  */
     break;
 
   case 8:
 #line 49 "DeskCalc.y" /* yacc.c:1646  */
     { (yyval.a) = newast(ABS,(struct ast*)(yyvsp[0].a),NULL);}
-#line 1324 "DeskCalc.tab.c" /* yacc.c:1646  */
+#line 1321 "DeskCalc.tab.c" /* yacc.c:1646  */
     break;
 
   case 9:
 #line 50 "DeskCalc.y" /* yacc.c:1646  */
     { (yyval.a) = newast(UM,(struct ast*)(yyvsp[0].a),NULL);}
-#line 1330 "DeskCalc.tab.c" /* yacc.c:1646  */
+#line 1327 "DeskCalc.tab.c" /* yacc.c:1646  */
     break;
 
   case 10:
 #line 51 "DeskCalc.y" /* yacc.c:1646  */
     { (yyval.a) = (yyvsp[-1].a);}
-#line 1336 "DeskCalc.tab.c" /* yacc.c:1646  */
+#line 1333 "DeskCalc.tab.c" /* yacc.c:1646  */
     break;
 
   case 11:
@@ -1340,73 +1337,73 @@ yyreduce:
     { 
 		(yyval.a) = newref((yyvsp[0].s)); 
 	  }
-#line 1344 "DeskCalc.tab.c" /* yacc.c:1646  */
+#line 1341 "DeskCalc.tab.c" /* yacc.c:1646  */
     break;
 
   case 12:
 #line 55 "DeskCalc.y" /* yacc.c:1646  */
     { (yyval.a) = newnum(NUM,(yyvsp[0].d));}
-#line 1350 "DeskCalc.tab.c" /* yacc.c:1646  */
+#line 1347 "DeskCalc.tab.c" /* yacc.c:1646  */
     break;
 
   case 13:
 #line 56 "DeskCalc.y" /* yacc.c:1646  */
     {(yyval.a) = newasgn((yyvsp[-2].s),(yyvsp[0].a));}
-#line 1356 "DeskCalc.tab.c" /* yacc.c:1646  */
+#line 1353 "DeskCalc.tab.c" /* yacc.c:1646  */
     break;
 
   case 14:
 #line 57 "DeskCalc.y" /* yacc.c:1646  */
     {(yyval.a) = newfunc((yyvsp[-3].fn),(yyvsp[-1].a));}
-#line 1362 "DeskCalc.tab.c" /* yacc.c:1646  */
+#line 1359 "DeskCalc.tab.c" /* yacc.c:1646  */
     break;
 
   case 15:
 #line 58 "DeskCalc.y" /* yacc.c:1646  */
     {(yyval.a) = newcall((yyvsp[-3].s),(yyvsp[-1].a));}
-#line 1368 "DeskCalc.tab.c" /* yacc.c:1646  */
+#line 1365 "DeskCalc.tab.c" /* yacc.c:1646  */
     break;
 
   case 17:
 #line 62 "DeskCalc.y" /* yacc.c:1646  */
     { (yyval.a) = newast('L',(yyvsp[-2].a),(yyvsp[0].a)); }
-#line 1374 "DeskCalc.tab.c" /* yacc.c:1646  */
+#line 1371 "DeskCalc.tab.c" /* yacc.c:1646  */
     break;
 
   case 18:
 #line 64 "DeskCalc.y" /* yacc.c:1646  */
     {(yyval.s1) = newsymlist((yyvsp[0].s),NULL); }
-#line 1380 "DeskCalc.tab.c" /* yacc.c:1646  */
+#line 1377 "DeskCalc.tab.c" /* yacc.c:1646  */
     break;
 
   case 19:
 #line 65 "DeskCalc.y" /* yacc.c:1646  */
     { (yyval.s1) = newsymlist((yyvsp[-2].s),(yyvsp[0].s1)); }
-#line 1386 "DeskCalc.tab.c" /* yacc.c:1646  */
+#line 1383 "DeskCalc.tab.c" /* yacc.c:1646  */
     break;
 
   case 20:
 #line 69 "DeskCalc.y" /* yacc.c:1646  */
     { (yyval.a) = newflow('I',(yyvsp[-2].a),(yyvsp[0].a),NULL);}
-#line 1392 "DeskCalc.tab.c" /* yacc.c:1646  */
+#line 1389 "DeskCalc.tab.c" /* yacc.c:1646  */
     break;
 
   case 21:
 #line 70 "DeskCalc.y" /* yacc.c:1646  */
     { (yyval.a) = newflow('I',(yyvsp[-4].a),(yyvsp[-2].a),(yyvsp[0].a));}
-#line 1398 "DeskCalc.tab.c" /* yacc.c:1646  */
+#line 1395 "DeskCalc.tab.c" /* yacc.c:1646  */
     break;
 
   case 22:
 #line 71 "DeskCalc.y" /* yacc.c:1646  */
     { (yyval.a) = newflow('W',(yyvsp[-2].a),(yyvsp[0].a),NULL); }
-#line 1404 "DeskCalc.tab.c" /* yacc.c:1646  */
+#line 1401 "DeskCalc.tab.c" /* yacc.c:1646  */
     break;
 
   case 24:
 #line 75 "DeskCalc.y" /* yacc.c:1646  */
     { (yyval.a) = NULL ;}
-#line 1410 "DeskCalc.tab.c" /* yacc.c:1646  */
+#line 1407 "DeskCalc.tab.c" /* yacc.c:1646  */
     break;
 
   case 25:
@@ -1416,19 +1413,19 @@ yyreduce:
     		      else
     		        (yyval.a) = newast('L',(yyvsp[-2].a),(yyvsp[0].a));
     		    }
-#line 1420 "DeskCalc.tab.c" /* yacc.c:1646  */
+#line 1417 "DeskCalc.tab.c" /* yacc.c:1646  */
     break;
 
   case 27:
 #line 84 "DeskCalc.y" /* yacc.c:1646  */
     {printf(">");}
-#line 1426 "DeskCalc.tab.c" /* yacc.c:1646  */
+#line 1423 "DeskCalc.tab.c" /* yacc.c:1646  */
     break;
 
   case 28:
 #line 85 "DeskCalc.y" /* yacc.c:1646  */
     { if((yyvsp[-1].a)->nodetype!='=')printf("Use \"let\" to declare a variable or function and \"display\" to display the value of variable or expression");printf("\n>");eval((struct ast*)(yyvsp[-1].a));}
-#line 1432 "DeskCalc.tab.c" /* yacc.c:1646  */
+#line 1429 "DeskCalc.tab.c" /* yacc.c:1646  */
     break;
 
   case 29:
@@ -1441,24 +1438,24 @@ yyreduce:
 					eval((struct ast*)(yyvsp[-1].a));printf(">");
 				}
 				treefree((yyvsp[-1].a));}
-#line 1445 "DeskCalc.tab.c" /* yacc.c:1646  */
+#line 1442 "DeskCalc.tab.c" /* yacc.c:1646  */
     break;
 
   case 30:
 #line 94 "DeskCalc.y" /* yacc.c:1646  */
     { dodef((yyvsp[-6].s),(yyvsp[-4].s1),(yyvsp[-1].a));
 								printf("Defined: %s\n> ",(yyvsp[-6].s)->name);}
-#line 1452 "DeskCalc.tab.c" /* yacc.c:1646  */
+#line 1449 "DeskCalc.tab.c" /* yacc.c:1646  */
     break;
 
   case 31:
 #line 96 "DeskCalc.y" /* yacc.c:1646  */
     { define_variables((yyvsp[-3].s),(yyvsp[-1].a));printf("Defined a variable: %s\n>",(yyvsp[-3].s)->name);}
-#line 1458 "DeskCalc.tab.c" /* yacc.c:1646  */
+#line 1455 "DeskCalc.tab.c" /* yacc.c:1646  */
     break;
 
 
-#line 1462 "DeskCalc.tab.c" /* yacc.c:1646  */
+#line 1459 "DeskCalc.tab.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -2121,7 +2118,7 @@ static double calluser(struct ufncall *f)
 
 int main()
 {
-	//yydebug = 1;
+	yydebug = 1;
 	yyparse();
 	return 0;
 }
