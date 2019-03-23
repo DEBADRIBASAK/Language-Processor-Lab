@@ -1,8 +1,8 @@
 %option noyywrap
 %x DECLARATION
 %{
-	#include "SubsetC.tab.hpp"
 	#include "SubSetC.h"
+	#include "SubsetC.tab.h"
 	int type;
 %}
 
@@ -58,11 +58,12 @@ letter [a-zA-Z]
 "||" {yylval.log = 2;return LOG;}
 "!" {yylval.log = 3;return LOG;}
 
-{digit}+ {return INTEGER;yylval.d = atoi(yytext); }
-{digit}*[\.]{digit}+ {return REAL;yylval.f = atof(yytext);}
+{digit}+ {yylval.d = atoi(yytext);return INTEGER;}
+{digit}*[\.]{digit}+ {yylval.f = atof(yytext);return REAL;}
 
-<DECLARATION>{letter}+ {yylval.s = insert(yytext);if(yylval.s!=NULL){yylval.s->type = type;return ID;}else return ERR;}
+<DECLARATION>{letter}+ {yylval.s = insert(yytext);if(yylval.s!=NULL){printf("Name = %s\n",yylval.s->name);yylval.s->type = type;return ID;}else return ERR;}
 <DECLARATION>"," {return ',';}
 <DECLARATION>";" {BEGIN INITIAL;return ';';}
 {letter}+ {yylval.s = search(yytext);if(yylval.s!=NULL)return ID;else return ERR;}
+{ws}+ {}
 

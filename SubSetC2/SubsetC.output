@@ -849,8 +849,6 @@ State 50
    18 stmt: stmt . ';' stmt
    18     | stmt ';' stmt .
 
-    ';'  error (nonassociative)
-
     $default  reduce using rule 18 (stmt)
 
 

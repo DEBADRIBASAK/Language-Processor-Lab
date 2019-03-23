@@ -68,7 +68,7 @@ extern int yydebug;
 
 union YYSTYPE
 {
-#line 17 "SubsetC.y" /* yacc.c:1909  */
+#line 20 "SubsetC.y" /* yacc.c:1909  */
 
 	struct symbol* s;
 	int d;

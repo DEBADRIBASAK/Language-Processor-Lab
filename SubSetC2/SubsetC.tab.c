@@ -65,19 +65,22 @@
 #line 1 "SubsetC.y" /* yacc.c:339  */
 
 	#include "SubSetC.h"
+	#include <bits/stdc++.h>
 	#include <string>
-	
-	int yyerror(char* s);
-	int temp_counter = 1,label_counter = 1;
-	FILE* yyout;
+	using namespace std;
+	int yyerror(string s);
+	int temp_counter = 1,lable_counter = 1;
+	extern FILE* yyout,*yyin;
+	extern int yylex();
 	struct Expression
 	{
 		string temp_name;
 		string code;
 		int type;// 1 for int, 2 for float
 	};
+	struct symbol Symbol_table[NHASH];
 
-#line 81 "SubsetC.tab.c" /* yacc.c:339  */
+#line 84 "SubsetC.tab.c" /* yacc.c:339  */
 
 # ifndef YY_NULLPTR
 #  if defined __cplusplus && 201103L <= __cplusplus
@@ -135,7 +138,7 @@ extern int yydebug;
 
 union YYSTYPE
 {
-#line 17 "SubsetC.y" /* yacc.c:355  */
+#line 20 "SubsetC.y" /* yacc.c:355  */
 
 	struct symbol* s;
 	int d;
@@ -143,7 +146,7 @@ union YYSTYPE
 	struct Expression* e;
 	int cmp,log,bit,assgn;
 
-#line 147 "SubsetC.tab.c" /* yacc.c:355  */
+#line 150 "SubsetC.tab.c" /* yacc.c:355  */
 };
 
 typedef union YYSTYPE YYSTYPE;
@@ -160,7 +163,7 @@ int yyparse (void);
 
 /* Copy the second part of user declarations.  */
 
-#line 164 "SubsetC.tab.c" /* yacc.c:358  */
+#line 167 "SubsetC.tab.c" /* yacc.c:358  */
 
 #ifdef short
 # undef short
@@ -459,9 +462,9 @@ static const yytype_uint8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint16 yyrline[] =
 {
-       0,    48,    48,    49,    50,    51,    52,    53,    54,    55,
-      56,    57,    58,   119,   156,   182,   208,   210,   212,   215,
-     218,   239,   259,   282,   299,   301,   302,   304,   305
+       0,    51,    51,    52,    53,    54,    55,    56,    57,    58,
+      59,    60,    61,   122,   159,   186,   213,   215,   217,   220,
+     223,   245,   265,   289,   306,   308,   309,   311,   312
 };
 #endif
 
@@ -496,7 +499,7 @@ static const yytype_uint16 yytoknum[] =
 #define YYTABLE_NINF -1
 
 #define yytable_value_is_error(Yytable_value) \
-  (!!((Yytable_value) == (-1)))
+  0
 
   /* YYPACT[STATE-NUM] -- Index in YYTABLE of the portion describing
      STATE-NUM.  */
@@ -507,8 +510,8 @@ static const yytype_int16 yypact[] =
       14,   -33,   -33,    46,   127,   127,   127,   127,   127,   127,
      127,   127,   127,    88,   -33,    55,    77,   111,   131,    12,
      -33,    67,   146,   152,    26,    26,    -3,    -3,    -3,   -33,
-      41,    21,    42,   127,   -33,    88,    88,   122,     5,    17,
-     127,    34,   -33,    86,    43,    44,    88,    88,    18,    22,
+     -33,    21,    42,   127,   -33,    88,    88,   122,     5,    17,
+     127,    29,   -33,    86,    43,    44,    88,    88,    18,    22,
      -33,   -33
 };
 
@@ -542,13 +545,13 @@ static const yytype_int8 yydefgoto[] =
   /* YYTABLE[YYPACT[STATE-NUM]] -- What to do in state STATE-NUM.  If
      positive, shift that token.  If negative, reduce the rule whose
      number is the opposite.  If YYTABLE_NINF, syntax error.  */
-static const yytype_int8 yytable[] =
+static const yytype_uint8 yytable[] =
 {
       23,    50,    22,    35,    36,    37,    38,    33,    33,    31,
       32,    41,    42,    43,    44,    45,    46,    47,    48,    49,
       33,    33,     1,    58,    59,    33,    16,     3,     4,    54,
       20,    17,    34,    61,    68,    69,    29,    30,    31,    32,
-      57,    18,    19,    39,    -1,    62,    70,    63,    55,    64,
+      57,    18,    19,    39,    64,    62,    70,    63,    55,     0,
       71,    24,    25,    26,    27,    28,    29,    30,    31,    32,
       24,    25,    26,    27,    28,    29,    30,    31,    32,    56,
       66,    67,    40,    25,    26,    27,    28,    29,    30,    31,
@@ -569,7 +572,7 @@ static const yytype_int8 yycheck[] =
       13,    24,    25,    26,    27,    28,    29,    30,    31,    32,
        3,     3,    23,    55,    56,     3,    25,    27,     0,    39,
       18,    25,    28,    28,    66,    67,    10,    11,    12,    13,
-      53,    25,     4,    29,     3,    28,    28,    60,    27,    15,
+      53,    25,     4,    29,    15,    28,    28,    60,    27,    -1,
       28,     5,     6,     7,     8,     9,    10,    11,    12,    13,
        5,     6,     7,     8,     9,    10,    11,    12,    13,    27,
       27,    27,    26,     6,     7,     8,     9,    10,    11,    12,
@@ -1288,85 +1291,85 @@ yyreduce:
   switch (yyn)
     {
         case 2:
-#line 48 "SubsetC.y" /* yacc.c:1646  */
+#line 51 "SubsetC.y" /* yacc.c:1646  */
     {(yyval.e) = NULL;}
-#line 1294 "SubsetC.tab.c" /* yacc.c:1646  */
+#line 1297 "SubsetC.tab.c" /* yacc.c:1646  */
     break;
 
   case 3:
-#line 49 "SubsetC.y" /* yacc.c:1646  */
-    {(yyval.e) = (struct Expression*)malloc(sizeof(struct Expression));(yyval.e)->temp_name = "t";(yyval.e)->temp_name+=to_string(temp_counter++);(yyval.e)->code = "";(yyval.e)->code+=(yyvsp[-2].e)->code;(yyval.e)->code+="\n";(yyval.e)->code+=(yyvsp[0].e)->code;(yyval.e)->code+="\n";(yyval.e)->code+=(yyvsp[-2].e)->temp_name;(yyval.e)->code+="+";(yyval.e)->code+=(yyvsp[0].e)->temp_name;}
-#line 1300 "SubsetC.tab.c" /* yacc.c:1646  */
+#line 52 "SubsetC.y" /* yacc.c:1646  */
+    {(yyval.e) = new Expression;(yyval.e)->temp_name = "t";(yyval.e)->temp_name+=to_string(temp_counter++);(yyval.e)->code = "";(yyval.e)->code+=(yyvsp[-2].e)->code;(yyval.e)->code+="\n";(yyval.e)->code+=(yyvsp[0].e)->code;(yyval.e)->code+="\n";(yyval.e)->code+=(yyval.e)->temp_name;(yyval.e)->code+=" = ";(yyval.e)->code+=(yyvsp[-2].e)->temp_name;(yyval.e)->code+="+";(yyval.e)->code+=(yyvsp[0].e)->temp_name;}
+#line 1303 "SubsetC.tab.c" /* yacc.c:1646  */
     break;
 
   case 4:
-#line 50 "SubsetC.y" /* yacc.c:1646  */
-    {(yyval.e) = (struct Expression*)malloc(sizeof(struct Expression));(yyval.e)->temp_name = "t";(yyval.e)->temp_name+=to_string(temp_counter++);(yyval.e)->code = "";(yyval.e)->code+=(yyvsp[-2].e)->code;(yyval.e)->code+="\n";(yyval.e)->code+=(yyvsp[0].e)->code;(yyval.e)->code+="\n";(yyval.e)->code+=(yyvsp[-2].e)->temp_name;(yyval.e)->code+="*";(yyval.e)->code+=(yyvsp[0].e)->temp_name;}
-#line 1306 "SubsetC.tab.c" /* yacc.c:1646  */
+#line 53 "SubsetC.y" /* yacc.c:1646  */
+    {(yyval.e) = new Expression;(yyval.e)->temp_name = "t";(yyval.e)->temp_name+=to_string(temp_counter++);(yyval.e)->code = "";(yyval.e)->code+=(yyvsp[-2].e)->code;(yyval.e)->code+="\n";(yyval.e)->code+=(yyvsp[0].e)->code;(yyval.e)->code+="\n";(yyval.e)->code+=(yyval.e)->temp_name;(yyval.e)->code+=" = ";(yyval.e)->code+=(yyvsp[-2].e)->temp_name;(yyval.e)->code+="*";(yyval.e)->code+=(yyvsp[0].e)->temp_name;}
+#line 1309 "SubsetC.tab.c" /* yacc.c:1646  */
     break;
 
   case 5:
-#line 51 "SubsetC.y" /* yacc.c:1646  */
-    {(yyval.e) = (struct Expression*)malloc(sizeof(struct Expression));(yyval.e)->temp_name = "t";(yyval.e)->temp_name+=to_string(temp_counter++);(yyval.e)->code = "";(yyval.e)->code+=(yyvsp[-2].e)->code;(yyval.e)->code+="\n";(yyval.e)->code+=(yyvsp[0].e)->code;(yyval.e)->code+="\n";(yyval.e)->code+=(yyvsp[-2].e)->temp_name;(yyval.e)->code+="-";(yyval.e)->code+=(yyvsp[0].e)->temp_name;}
-#line 1312 "SubsetC.tab.c" /* yacc.c:1646  */
+#line 54 "SubsetC.y" /* yacc.c:1646  */
+    {(yyval.e) = new Expression;(yyval.e)->temp_name = "t";(yyval.e)->temp_name+=to_string(temp_counter++);(yyval.e)->code = "";(yyval.e)->code+=(yyvsp[-2].e)->code;(yyval.e)->code+="\n";(yyval.e)->code+=(yyvsp[0].e)->code;(yyval.e)->code+="\n";(yyval.e)->code+=(yyval.e)->temp_name;(yyval.e)->code+=" = ";(yyval.e)->code+=(yyvsp[-2].e)->temp_name;(yyval.e)->code+="-";(yyval.e)->code+=(yyvsp[0].e)->temp_name;}
+#line 1315 "SubsetC.tab.c" /* yacc.c:1646  */
     break;
 
   case 6:
-#line 52 "SubsetC.y" /* yacc.c:1646  */
-    {(yyval.e) = (struct Expression*)malloc(sizeof(struct Expression));(yyval.e)->temp_name = "t";(yyval.e)->temp_name+=to_string(temp_counter++);(yyval.e)->code = "";(yyval.e)->code+=(yyvsp[-2].e)->code;(yyval.e)->code+="\n";(yyval.e)->code+=(yyvsp[0].e)->code;(yyval.e)->code+="\n";(yyval.e)->code+=(yyvsp[-2].e)->temp_name;(yyval.e)->code+="/";(yyval.e)->code+=(yyvsp[0].e)->temp_name;}
-#line 1318 "SubsetC.tab.c" /* yacc.c:1646  */
+#line 55 "SubsetC.y" /* yacc.c:1646  */
+    {(yyval.e) = new Expression;(yyval.e)->temp_name = "t";(yyval.e)->temp_name+=to_string(temp_counter++);(yyval.e)->code = "";(yyval.e)->code+=(yyvsp[-2].e)->code;(yyval.e)->code+="\n";(yyval.e)->code+=(yyvsp[0].e)->code;(yyval.e)->code+="\n";(yyval.e)->code+=(yyval.e)->temp_name;(yyval.e)->code+=" = ";(yyval.e)->code+=(yyvsp[-2].e)->temp_name;(yyval.e)->code+="/";(yyval.e)->code+=(yyvsp[0].e)->temp_name;}
+#line 1321 "SubsetC.tab.c" /* yacc.c:1646  */
     break;
 
   case 7:
-#line 53 "SubsetC.y" /* yacc.c:1646  */
-    {(yyval.e) = (struct Expression*)malloc(sizeof(struct Expression));(yyval.e)->temp_name = "t";(yyval.e)->temp_name+=to_string(temp_counter++);(yyval.e)->code = "";(yyval.e)->code+=(yyvsp[-2].e)->code;(yyval.e)->code+="\n";(yyval.e)->code+=(yyvsp[0].e)->code;(yyval.e)->code+="\n";(yyval.e)->code+=(yyvsp[-2].e)->temp_name;(yyval.e)->code+="%";(yyval.e)->code+=(yyvsp[0].e)->temp_name;}
-#line 1324 "SubsetC.tab.c" /* yacc.c:1646  */
+#line 56 "SubsetC.y" /* yacc.c:1646  */
+    {(yyval.e) = new Expression;(yyval.e)->temp_name = "t";(yyval.e)->temp_name+=to_string(temp_counter++);(yyval.e)->code = "";(yyval.e)->code+=(yyvsp[-2].e)->code;(yyval.e)->code+="\n";(yyval.e)->code+=(yyvsp[0].e)->code;(yyval.e)->code+="\n";(yyval.e)->code+=(yyval.e)->temp_name;(yyval.e)->code+=" = ";(yyval.e)->code+=(yyvsp[-2].e)->temp_name;(yyval.e)->code+="%";(yyval.e)->code+=(yyvsp[0].e)->temp_name;}
+#line 1327 "SubsetC.tab.c" /* yacc.c:1646  */
     break;
 
   case 8:
-#line 54 "SubsetC.y" /* yacc.c:1646  */
-    {(yyval.e) = (struct Expression*)malloc(sizeof(struct Expression));(yyval.e)->temp_name = "t";(yyval.e)->temp_name+=to_string(temp_counter++);(yyval.e)->code = "";(yyval.e)->code+=(yyvsp[-2].e)->code;(yyval.e)->code+="\n";(yyval.e)->code+=(yyvsp[0].e)->code;(yyval.e)->code+="\n";(yyval.e)->code+=(yyvsp[-2].e)->temp_name;(yyval.e)->code+="*";(yyval.e)->code+=(yyvsp[0].e)->temp_name;}
-#line 1330 "SubsetC.tab.c" /* yacc.c:1646  */
+#line 57 "SubsetC.y" /* yacc.c:1646  */
+    {(yyval.e) = new Expression;(yyval.e)->temp_name = "t";(yyval.e)->temp_name+=to_string(temp_counter++);(yyval.e)->code = "";(yyval.e)->code+=(yyvsp[-2].e)->code;(yyval.e)->code+="\n";(yyval.e)->code+=(yyvsp[0].e)->code;(yyval.e)->code+="\n";(yyval.e)->code+=(yyval.e)->temp_name;(yyval.e)->code+=" = ";(yyval.e)->code+=(yyvsp[-2].e)->temp_name;(yyval.e)->code+="^";(yyval.e)->code+=(yyvsp[0].e)->temp_name;}
+#line 1333 "SubsetC.tab.c" /* yacc.c:1646  */
     break;
 
   case 9:
-#line 55 "SubsetC.y" /* yacc.c:1646  */
-    {(yyvsp[0].e)->type = 1;}
-#line 1336 "SubsetC.tab.c" /* yacc.c:1646  */
+#line 58 "SubsetC.y" /* yacc.c:1646  */
+    {(yyvsp[0].e)->type = 1;(yyval.e) = (yyvsp[0].e);}
+#line 1339 "SubsetC.tab.c" /* yacc.c:1646  */
     break;
 
   case 10:
-#line 56 "SubsetC.y" /* yacc.c:1646  */
-    {(yyvsp[0].e)->type = 2;}
-#line 1342 "SubsetC.tab.c" /* yacc.c:1646  */
+#line 59 "SubsetC.y" /* yacc.c:1646  */
+    {(yyvsp[0].e)->type = 2;(yyval.e) = (yyvsp[0].e);}
+#line 1345 "SubsetC.tab.c" /* yacc.c:1646  */
     break;
 
   case 11:
-#line 57 "SubsetC.y" /* yacc.c:1646  */
-    {(yyval.e) = (struct Expression*)malloc(sizeof(struct Expression));strcpy((yyval.e)->temp_name,(yyvsp[0].s)->name);(yyval.e)->type = (yyvsp[0].s)->type;}
-#line 1348 "SubsetC.tab.c" /* yacc.c:1646  */
+#line 60 "SubsetC.y" /* yacc.c:1646  */
+    {(yyval.e) = new Expression;(yyval.e)->temp_name=(yyvsp[0].s)->name;(yyval.e)->type = (yyvsp[0].s)->type;(yyval.e)->code = "";}
+#line 1351 "SubsetC.tab.c" /* yacc.c:1646  */
     break;
 
   case 12:
-#line 58 "SubsetC.y" /* yacc.c:1646  */
-    {switch((yyvsp[-1].assgn))
-   {
-	(yyval.e) = (struct Expression*)malloc(sizeof(struct Expression));
+#line 61 "SubsetC.y" /* yacc.c:1646  */
+    {(yyval.e) = new Expression;
 	(yyval.e)->code = "";
 	(yyval.e)->code+=(yyvsp[0].e)->code;
-	(yyval.e)->code+="\n";
+	(yyval.e)->code+="\n";switch((yyvsp[-1].assgn))
+   {
+	
    	case 1:
-   	(yyvsp[0].e)->code+=(yyvsp[-2].s)->name;
-   	(yyvsp[0].e)->code+=" = ";
-   	(yyval.e)->code+=exp->temp_name;
+   	(yyval.e)->code+=(yyvsp[-2].s)->name;
+   	(yyval.e)->code+=" = ";
+   	(yyval.e)->code+=(yyvsp[0].e)->temp_name;
    	break;
    	case 2:
    	(yyval.e)->code+="t";
    	(yyval.e)->code+=to_string(temp_counter);
-   	(yyvsp[0].e)->code+=" = ";
-   	(yyvsp[0].e)->code+=(yyvsp[-2].s)->name;
-   	(yyvsp[0].e)->code+="+";
-   	(yyval.e)->code+=exp->temp_name;
+   	(yyval.e)->code+=" = ";
+   	(yyval.e)->code+=(yyvsp[-2].s)->name;
+   	(yyval.e)->code+="+";
+   	(yyval.e)->code+=(yyvsp[0].e)->temp_name;
    	(yyval.e)->code+=(yyvsp[-2].s)->name;
    	(yyval.e)->code+=" = ";
    	(yyval.e)->code+="t";
@@ -1375,10 +1378,10 @@ yyreduce:
    	case 3:
    	(yyval.e)->code+="t";
    	(yyval.e)->code+=to_string(temp_counter);
-   	(yyvsp[0].e)->code+=" = ";
-   	(yyvsp[0].e)->code+=(yyvsp[-2].s)->name;
-   	(yyvsp[0].e)->code+="-";
-   	(yyval.e)->code+=exp->temp_name;
+   	(yyval.e)->code+=" = ";
+   	(yyval.e)->code+=(yyvsp[-2].s)->name;
+   	(yyval.e)->code+="-";
+   	(yyval.e)->code+=(yyvsp[0].e)->temp_name;
    	(yyval.e)->code+=(yyvsp[-2].s)->name;
    	(yyval.e)->code+=" = ";
    	(yyval.e)->code+="t";
@@ -1387,10 +1390,10 @@ yyreduce:
    	case 4:
    	(yyval.e)->code+="t";
    	(yyval.e)->code+=to_string(temp_counter);
-   	(yyvsp[0].e)->code+=" = ";
-   	(yyvsp[0].e)->code+=(yyvsp[-2].s)->name;
-   	(yyvsp[0].e)->code+="*";
-   	(yyval.e)->code+=exp->temp_name;
+   	(yyval.e)->code+=" = ";
+   	(yyval.e)->code+=(yyvsp[-2].s)->name;
+   	(yyval.e)->code+="*";
+   	(yyval.e)->code+=(yyvsp[0].e)->temp_name;
    	(yyval.e)->code+=(yyvsp[-2].s)->name;
    	(yyval.e)->code+=" = ";
    	(yyval.e)->code+="t";
@@ -1399,10 +1402,10 @@ yyreduce:
    	case 5:
    	(yyval.e)->code+="t";
    	(yyval.e)->code+=to_string(temp_counter);
-   	(yyvsp[0].e)->code+=" = ";
-   	(yyvsp[0].e)->code+=(yyvsp[-2].s)->name;
-   	(yyvsp[0].e)->code+="/";
-   	(yyval.e)->code+=exp->temp_name;
+   	(yyval.e)->code+=" = ";
+   	(yyval.e)->code+=(yyvsp[-2].s)->name;
+   	(yyval.e)->code+="/";
+   	(yyval.e)->code+=(yyvsp[0].e)->temp_name;
    	(yyval.e)->code+=(yyvsp[-2].s)->name;
    	(yyval.e)->code+=" = ";
    	(yyval.e)->code+="t";
@@ -1410,11 +1413,11 @@ yyreduce:
    	break;
    	(yyval.e)->code+="\n";
    }}
-#line 1414 "SubsetC.tab.c" /* yacc.c:1646  */
+#line 1417 "SubsetC.tab.c" /* yacc.c:1646  */
     break;
 
   case 13:
-#line 119 "SubsetC.y" /* yacc.c:1646  */
+#line 122 "SubsetC.y" /* yacc.c:1646  */
     {
    	string ch;
    	switch((yyvsp[-1].cmp))
@@ -1441,7 +1444,7 @@ yyreduce:
    	}
    	//char t[10];sprintf(t,"t%d",temp_counter++);
    	//fprintf(yyout,"%s = %s %s %s\n",t,$1->temp_name,ch,$3->temp_name);
-   	(yyval.e) = (struct Expression*)malloc(sizeof(struct Expression));//strcpy($$->temp_name,t);
+   	(yyval.e) = new Expression;//strcpy($$->temp_name,t);
    	(yyval.e)->code+=(yyvsp[-2].e)->code;
    	(yyval.e)->code+=(yyvsp[0].e)->code;
    	(yyval.e)->temp_name = "t"+to_string(temp_counter++);
@@ -1452,11 +1455,11 @@ yyreduce:
    	(yyval.e)->code+=(yyvsp[0].e)->temp_name;
    	
    }
-#line 1456 "SubsetC.tab.c" /* yacc.c:1646  */
+#line 1459 "SubsetC.tab.c" /* yacc.c:1646  */
     break;
 
   case 14:
-#line 156 "SubsetC.y" /* yacc.c:1646  */
+#line 159 "SubsetC.y" /* yacc.c:1646  */
     {
    	string ch;
    	switch((yyvsp[-1].bit))
@@ -1472,7 +1475,8 @@ yyreduce:
    		break;
    		
    	}
-   	(yyval.e) = (struct Expression*)malloc(sizeof(struct Expression));//strcpy($$->temp_name,t);
+   	(yyval.e) = new Expression;//strcpy($$->temp_name,t);
+   	if((yyvsp[-2].e)!=NULL)
    	(yyval.e)->code+=(yyvsp[-2].e)->code;
    	(yyval.e)->code+=(yyvsp[0].e)->code;
    	(yyval.e)->temp_name = "t"+to_string(temp_counter++);
@@ -1483,11 +1487,11 @@ yyreduce:
    	(yyval.e)->code+=ch;
    	(yyval.e)->code+=(yyvsp[0].e)->temp_name;
    }
-#line 1487 "SubsetC.tab.c" /* yacc.c:1646  */
+#line 1491 "SubsetC.tab.c" /* yacc.c:1646  */
     break;
 
   case 15:
-#line 182 "SubsetC.y" /* yacc.c:1646  */
+#line 186 "SubsetC.y" /* yacc.c:1646  */
     {
    	string ch;
    	switch((yyvsp[-1].log))
@@ -1503,7 +1507,8 @@ yyreduce:
    		break;
    		
    	}
-   	(yyval.e) = (struct Expression*)malloc(sizeof(struct Expression));//strcpy($$->temp_name,t);
+   	(yyval.e) = new Expression;//strcpy($$->temp_name,t);
+   	if((yyvsp[-2].e)!=NULL)
    	(yyval.e)->code+=(yyvsp[-2].e)->code;
    	(yyval.e)->code+=(yyvsp[0].e)->code;
    	(yyval.e)->temp_name = "t"+to_string(temp_counter++);
@@ -1514,47 +1519,48 @@ yyreduce:
    	(yyval.e)->code+=ch;
    	(yyval.e)->code+=(yyvsp[0].e)->temp_name;
    }
-#line 1518 "SubsetC.tab.c" /* yacc.c:1646  */
+#line 1523 "SubsetC.tab.c" /* yacc.c:1646  */
     break;
 
   case 16:
-#line 208 "SubsetC.y" /* yacc.c:1646  */
-    {(yyval.e) = (struct Expression*)malloc(sizeof(struct Expression));(yyval.e)->temp_name = to_string((yyvsp[0].d));
-   (yyval.e)->type = 1;}
-#line 1525 "SubsetC.tab.c" /* yacc.c:1646  */
+#line 213 "SubsetC.y" /* yacc.c:1646  */
+    {(yyval.e) = new Expression;(yyval.e)->temp_name = to_string((yyvsp[0].d));
+   (yyval.e)->type = 1;cout<<"Number is ==***************"<<(yyvsp[0].d)<<endl;}
+#line 1530 "SubsetC.tab.c" /* yacc.c:1646  */
     break;
 
   case 17:
-#line 210 "SubsetC.y" /* yacc.c:1646  */
-    {(yyval.e) = (struct Expression*)malloc(sizeof(struct Expression));(yyval.e)->temp_name = to_string((yyvsp[0].f));
+#line 215 "SubsetC.y" /* yacc.c:1646  */
+    {(yyval.e) = new Expression;(yyval.e)->temp_name = to_string((yyvsp[0].f));
    (yyval.e)->type = 1;}
-#line 1532 "SubsetC.tab.c" /* yacc.c:1646  */
+#line 1537 "SubsetC.tab.c" /* yacc.c:1646  */
     break;
 
   case 18:
-#line 212 "SubsetC.y" /* yacc.c:1646  */
+#line 217 "SubsetC.y" /* yacc.c:1646  */
     {(yyval.e) = (yyvsp[-1].e);}
-#line 1538 "SubsetC.tab.c" /* yacc.c:1646  */
+#line 1543 "SubsetC.tab.c" /* yacc.c:1646  */
     break;
 
   case 19:
-#line 215 "SubsetC.y" /* yacc.c:1646  */
-    {(yyval.e) = (struct Expression*)malloc(sizeof(struct Expression));if((yyvsp[0].e)==NULL)
-    (yyval.e) = (yyvsp[-2].e);else {(yyval.e)->code = ""+(yyvsp[-2].e)->code+"\n"+(yyvsp[0].e)->code;}
+#line 220 "SubsetC.y" /* yacc.c:1646  */
+    {(yyval.e) = new Expression;if((yyvsp[0].e)==NULL)
+    (yyval.e) = (yyvsp[-2].e);else {cout<<"Code1 = "<<(yyvsp[-2].e)->code<<"Code2 = "<<(yyvsp[0].e)->code<<endl;(yyval.e)->code = "";(yyval.e)->code = (yyval.e)->code+(yyvsp[-2].e)->code+"\n"+(yyvsp[0].e)->code;}
     }
-#line 1546 "SubsetC.tab.c" /* yacc.c:1646  */
+#line 1551 "SubsetC.tab.c" /* yacc.c:1646  */
     break;
 
   case 20:
-#line 218 "SubsetC.y" /* yacc.c:1646  */
+#line 223 "SubsetC.y" /* yacc.c:1646  */
     {
     	string label;
     	label="l";
     	label+=to_string(lable_counter++);
     	label+=": \n";
-    	(yyval.e) = (struct Expression*)malloc(sizeof(struct Expression));
+    	(yyval.e) = new Expression;
     	(yyval.e)->code = "";
     	(yyval.e)->code+=label;
+    	(yyval.e)->code=(yyval.e)->code+(yyvsp[-8].e)->code+"\n";
     	(yyval.e)->code+="if (";
     	(yyval.e)->code+=(yyvsp[-8].e)->temp_name;
     	(yyval.e)->code+=") == 0 goto ";
@@ -1563,22 +1569,22 @@ yyreduce:
     	//label+=": \n";
     	(yyval.e)->code+=label;
     	(yyval.e)->code+="\n";
-    	(yyval.e)->code+=(yyvsp[-5].e)->code;
+    	(yyval.e)->code=(yyval.e)->code+(yyvsp[-5].e)->code+"\n";
     	label+=": \n";
     	(yyval.e)->code+=label;
     	(yyval.e)->code+=(yyvsp[-1].e)->code;
     }
-#line 1572 "SubsetC.tab.c" /* yacc.c:1646  */
+#line 1578 "SubsetC.tab.c" /* yacc.c:1646  */
     break;
 
   case 21:
-#line 240 "SubsetC.y" /* yacc.c:1646  */
+#line 246 "SubsetC.y" /* yacc.c:1646  */
     {
     	string label;
     	label="l";
     	label+=to_string(lable_counter++);
     	label+=": \n";
-    	(yyval.e) = (struct Expression*)malloc(sizeof(struct Expression));
+    	(yyval.e) = new Expression;
     	(yyval.e)->code = "";
     	(yyval.e)->code+=label;
     	(yyval.e)->code+="if (";
@@ -1592,19 +1598,20 @@ yyreduce:
     	label+=": \n";
     	(yyval.e)->code+=label;
     }
-#line 1596 "SubsetC.tab.c" /* yacc.c:1646  */
+#line 1602 "SubsetC.tab.c" /* yacc.c:1646  */
     break;
 
   case 22:
-#line 260 "SubsetC.y" /* yacc.c:1646  */
+#line 266 "SubsetC.y" /* yacc.c:1646  */
     {
     	string label1,label2;
     	label1="l";
     	label1+=to_string(lable_counter++);
-    	(yyval.e) = (struct Expression*)malloc(sizeof(struct Expression));
+    	(yyval.e) = new Expression;
     	(yyval.e)->code = "";
-    	(yyval.e)->code+=label;
+    	(yyval.e)->code+=label1;
     	(yyval.e)->code+=": \n";
+    	(yyval.e)->code=(yyval.e)->code+(yyvsp[-4].e)->code+"\n";
     	(yyval.e)->code+="if (";
     	(yyval.e)->code+=(yyvsp[-4].e)->temp_name;
     	(yyval.e)->code+=") == 0 goto ";
@@ -1612,20 +1619,20 @@ yyreduce:
     	label2+=to_string(lable_counter++);
     	(yyval.e)->code+=label2;
     	(yyval.e)->code+="\n";
-    	(yyval.e)->code+=(yyvsp[-1].e)->code;
-    	(yyval.e)->code+="goto "
+    	(yyval.e)->code=(yyval.e)->code+(yyvsp[-1].e)->code+"\n";
+    	(yyval.e)->code+="goto ";
     	(yyval.e)->code+=label1;
     	(yyval.e)->code+="\n";
     	label2+=": \n";
     	(yyval.e)->code+=label2;
     }
-#line 1623 "SubsetC.tab.c" /* yacc.c:1646  */
+#line 1630 "SubsetC.tab.c" /* yacc.c:1646  */
     break;
 
   case 23:
-#line 283 "SubsetC.y" /* yacc.c:1646  */
+#line 290 "SubsetC.y" /* yacc.c:1646  */
     {
-    	(yyval.e) = (struct Expression*)malloc(sizeof(struct Expression));
+    	(yyval.e) = new Expression;
     	(yyval.e)->code = "";
     	(yyval.e)->code+=(yyvsp[-8].e)->code;
     	string label1,label2;
@@ -1635,40 +1642,40 @@ yyreduce:
     	label2+=to_string(lable_counter++);
     	(yyval.e)->code+=label1;
     	(yyval.e)->code+=": \n";
-    	(yyval.e)->code+=(yyvsp[-6].e)->code;
-    	(yyval.e)->code=(yyval.e)->code+"if ("+(yyvsp[-6].e)->temp_name+") == 0 goto "+label2+"\n"+(yyvsp[-1].e)->code;
-    	(yyval.e)->code+=(yyvsp[-4].e)->code;
+    	(yyval.e)->code=(yyval.e)->code+(yyvsp[-6].e)->code+"\n";
+    	(yyval.e)->code=(yyval.e)->code+"if ("+(yyvsp[-6].e)->temp_name+") == 0 goto "+label2+"\n"+(yyvsp[-1].e)->code+"\n"+(yyvsp[-4].e)->code+"\n";
+
     	(yyval.e)->code = (yyval.e)->code+"goto "+label1+"\n"+label2+": \n";
     }
-#line 1644 "SubsetC.tab.c" /* yacc.c:1646  */
+#line 1651 "SubsetC.tab.c" /* yacc.c:1646  */
     break;
 
   case 24:
-#line 299 "SubsetC.y" /* yacc.c:1646  */
+#line 306 "SubsetC.y" /* yacc.c:1646  */
     {(yyval.e) = (yyvsp[0].e);}
-#line 1650 "SubsetC.tab.c" /* yacc.c:1646  */
+#line 1657 "SubsetC.tab.c" /* yacc.c:1646  */
     break;
 
   case 25:
-#line 301 "SubsetC.y" /* yacc.c:1646  */
-    {(yyval.e) = (struct Expression*)malloc(sizeof(struct Expression));(yyval.e)->code = "";(yyval.e)->code = (yyval.e)->code+(yyvsp[0].s)->name+" = 0";}
-#line 1656 "SubsetC.tab.c" /* yacc.c:1646  */
+#line 308 "SubsetC.y" /* yacc.c:1646  */
+    {printf("Here\n");if((yyvsp[0].s)!=NULL){cout<<"yes\n";}cout<<"Name = "<<(yyvsp[0].s)->name<<endl;(yyval.e) = new Expression;(yyval.e)->code = "";cout<<"Upto\n";(yyval.e)->code = (yyval.e)->code+string((yyvsp[0].s)->name)+" = 0";cout<<"Code = "<<(yyval.e)->code<<endl;}
+#line 1663 "SubsetC.tab.c" /* yacc.c:1646  */
     break;
 
   case 26:
-#line 302 "SubsetC.y" /* yacc.c:1646  */
-    {(yyval.e) = (struct Expression*)malloc(sizeof(struct Expression));(yyval.e)->code = "";(yyval.e)->code = (yyval.e)->code+(yyvsp[-2].s)->name+" = 0";(yyval.e)->code+=(yyvsp[0].e)->code;}
-#line 1662 "SubsetC.tab.c" /* yacc.c:1646  */
+#line 309 "SubsetC.y" /* yacc.c:1646  */
+    {(yyval.e) = new Expression;(yyval.e)->code = "";(yyval.e)->code = (yyval.e)->code+(yyvsp[-2].s)->name+" = 0\n";(yyval.e)->code+=(yyvsp[0].e)->code;}
+#line 1669 "SubsetC.tab.c" /* yacc.c:1646  */
     break;
 
   case 28:
-#line 305 "SubsetC.y" /* yacc.c:1646  */
-    {fprintf(yyout,"%s",stmt.c_str())}
-#line 1668 "SubsetC.tab.c" /* yacc.c:1646  */
+#line 312 "SubsetC.y" /* yacc.c:1646  */
+    {fprintf(yyout,"%s",(yyvsp[-1].e)->code.c_str());}
+#line 1675 "SubsetC.tab.c" /* yacc.c:1646  */
     break;
 
 
-#line 1672 "SubsetC.tab.c" /* yacc.c:1646  */
+#line 1679 "SubsetC.tab.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -1896,11 +1903,11 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 308 "SubsetC.y" /* yacc.c:1906  */
+#line 315 "SubsetC.y" /* yacc.c:1906  */
 
 
 
-int hash(char* s)
+int Hash(char* s)
 {
 	int n = strlen(s);
 	int h = 0;
@@ -1913,15 +1920,17 @@ int hash(char* s)
 
 struct symbol* insert(char* s)
 {
-	int h = hash(s);
+	int h = Hash(s);
 	int t = NHASH;
 	struct symbol *q;
 	while(t>0)
 	{
-		if(symbol_table[h].name==NULL)
+		if(Symbol_table[h].name==NULL)
 		{
-			strcpy(symbol_table[h].name,s);
-			q = &s;
+			printf("Found at: %d",h);
+			Symbol_table[h].name = (char*)malloc(sizeof(char)*20);
+			strcpy(Symbol_table[h].name,s);
+			q = &Symbol_table[h];
 			return q;
 		}
 		h = (h+1)%NHASH;
@@ -1932,18 +1941,19 @@ struct symbol* insert(char* s)
 
 struct symbol* search(char* s)
 {
-	int h = hash(s);
+	int h = Hash(s);
 	int t = NHASH;
 	struct symbol *q;
 	while(t>0)
 	{
-		if(symbol_table[h].name==NULL)
+		if(Symbol_table[h].name==NULL)
 		{
 			return NULL;
 		}
-		else if(strcmp(symbol_table[h].name,s)==0)
+		else if(strcmp(Symbol_table[h].name,s)==0)
 		{
-			q = &symbol_table[h];
+			printf("Found at: %d",h);
+			q = &Symbol_table[h];
 			return q;
 		}
 		h = (h+1)%NHASH;
@@ -1951,8 +1961,12 @@ struct symbol* search(char* s)
 	}
 }
 
-int main()
+int main(int argc,char* argv[])
 {
+	for(int i=0;i<NHASH;i++)
+	{
+		Symbol_table[i].name = NULL;	
+	}
 	yyin = fopen(argv[1],"r");
 	if(yyin==NULL)
 	{
@@ -1965,9 +1979,9 @@ int main()
 	return 0;
 }
 
-int yyerror(char* s)
+int yyerror(string s)
 {
-	printf("ERROR: %s\n",s);
+	cout<<s;
 	return 0;
 }
 

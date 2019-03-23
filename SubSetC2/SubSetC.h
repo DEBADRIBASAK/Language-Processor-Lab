@@ -1,17 +1,15 @@
-
-
-
+#pragma once
 struct symbol
 {
 	int type;
-	char name[20];
+	char* name;
 	float val;
 };
 
 #define NHASH 9997
 
 
-struct symbol symbol_table[NHASH];
+extern struct symbol Symbol_table[NHASH];
 
 struct ID_List
 {
@@ -20,6 +18,6 @@ struct ID_List
 	struct ID_List* next;
 };
 
-int Hash(char* s);
-struct symbol* search(char* s);
-struct symbol* insert(char* s);
+extern int Hash(char* s);
+extern struct symbol* search(char* s);
+extern struct symbol* insert(char* s);
