@@ -30,8 +30,8 @@
    This special exception was added by the Free Software Foundation in
    version 2.2 of Bison.  */
 
-#ifndef YY_YY_SUBSETC_TAB_H_INCLUDED
-# define YY_YY_SUBSETC_TAB_H_INCLUDED
+#ifndef YY_YY_SUBSETC_TAB_HPP_INCLUDED
+# define YY_YY_SUBSETC_TAB_HPP_INCLUDED
 /* Debug traces.  */
 #ifndef YYDEBUG
 # define YYDEBUG 1
@@ -45,20 +45,21 @@ extern int yydebug;
 # define YYTOKENTYPE
   enum yytokentype
   {
-    MAIN = 258,
-    DATATYPE = 259,
-    ID = 260,
-    INTEGER = 261,
-    FLOAT = 262,
-    ERR = 263,
-    LOG = 264,
-    ASSGN = 265,
-    BIT = 266,
-    CMP = 267,
-    IF = 268,
-    ELSE = 269,
-    FOR = 270,
-    WHILE = 271
+    ASSGN = 258,
+    CMP = 259,
+    LOG = 260,
+    BIT = 261,
+    IF = 262,
+    ELSE = 263,
+    WHILE = 264,
+    FOR = 265,
+    ID = 266,
+    INTEGER = 267,
+    REAL = 268,
+    INT = 269,
+    FLOAT = 270,
+    MAIN = 271,
+    ERR = 272
   };
 #endif
 
@@ -67,14 +68,15 @@ extern int yydebug;
 
 union YYSTYPE
 {
-#line 18 "SubsetC.y" /* yacc.c:1909  */
+#line 20 "SubsetC.ypp" /* yacc.c:1909  */
 
-	struct ast* a;
-	double d;
-	struct symbol_table *s;
-	int assfn,logfn,bitfn,i,errfn,fn,dt;
+	struct symbol* s;
+	int d;
+	float f;
+	struct Expression* e;
+	int cmp,log,bit,assgn;
 
-#line 78 "SubsetC.tab.h" /* yacc.c:1909  */
+#line 80 "SubsetC.tab.hpp" /* yacc.c:1909  */
 };
 
 typedef union YYSTYPE YYSTYPE;
@@ -87,4 +89,4 @@ extern YYSTYPE yylval;
 
 int yyparse (void);
 
-#endif /* !YY_YY_SUBSETC_TAB_H_INCLUDED  */
+#endif /* !YY_YY_SUBSETC_TAB_HPP_INCLUDED  */

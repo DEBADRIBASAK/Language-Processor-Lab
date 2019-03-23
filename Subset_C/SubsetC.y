@@ -28,18 +28,19 @@ char temp_var[10] = {'t','\0'};
 %token <i> INTEGER
 %token <d> FLOAT
 %token <errfn> ERR
-%token <logfn> LOG
-%token <assfn> ASSGN
-%token <bitfn> BIT
-%token <fn> CMP
+%nonassoc '(' ')'
+%left <logfn> LOG
+%right <assfn> ASSGN
+%left <bitfn> BIT
+%left <fn> CMP
 %token IF ELSE FOR WHILE
-%nonassoc '?' ':'
+%left '?' ':'
 %left '+' '-'
 %left '*' '/'
 %left '%'
 %right '@'
-%nonassoc '(' ')' '{' '}'
-%token ';'
+%nonassoc '{' '}'
+%nonassoc ';'
 %type <a> exp stmt 
 
 %start calclist
@@ -58,18 +59,20 @@ exp: INTEGER {$$ = newnum('N',1,(double)$1);}
    | exp '/' exp {$$ = newast('/',$1,$3);}
    | exp '@' exp {$$ = newast('@',$1,$3);}
    | exp '%' exp {$$ = newast('%',$1,$3);}
-   | exp '?' stmt ':' stmt {$$ = newflow('I',2,$1,$3,$5,NULL,NULL);}
+   | exp '?' exp ':' exp {$$ = newflow('I',2,$1,$3,$5,NULL,NULL);}
    | exp LOG exp {$$ = newlog('L',$2,$1,$3);}
    | LOG exp {$$ = newlog('L',$1,NULL,$2);}
    | exp CMP exp {$$ = newcmp('C',$2,$1,$3);}
    | exp BIT exp {$$ = newbit('B',$2,$1,$3);}
    | BIT exp {$$ = newlog('B',$1,NULL,$2);}
    | ID ASSGN exp {$$ = newassgn('A',$2,$1,$3);}
+   | DATATYPE ID {$$ = newassgn('A',1,$2,newnum('N',1,0.0));}
+   | '(' exp ')' {$$ = $2;}
    ;
 
 
 stmt: MAIN '{' stmt '}' {$$ = $3;}//the last part of generation after preparing the ast
-    | DATATYPE ID ';' stmt { $$ = newast('S',newassgn('A',1,$2,newnum('N',1,0.0)),$4); }
+   // | DATATYPE ID ';' stmt { $$ = newast('S',newassgn('A',1,$2,newnum('N',1,0.0)),$4); }
     | exp ';' stmt { 
     			if($3==NULL)
     			$$ = $1;
@@ -80,9 +83,14 @@ stmt: MAIN '{' stmt '}' {$$ = $3;}//the last part of generation after preparing 
     | IF '(' exp ')' '{' stmt '}' ELSE '{' stmt '}' {$$ = newflow('I',2,$3,$6,$10,NULL,NULL);}
     | WHILE '(' exp ')' '{' stmt '}' {$$ = newflow('W',1,$3,$6,NULL,NULL,NULL);}
     | FOR '(' exp ';' exp ';' exp ')' '{' stmt '}' {$$ = newflow('F',2,$5,$10,NULL,$3,$7);}
-    | ERR stmt { yyerror("One error ocurred");}
+    | stmt IF '(' exp ')' '{' stmt '}' { $$ = newflow('I',1,$4,$7,NULL,NULL,NULL);$$ = newast('S',$1,$$);}
+    | stmt IF '(' exp ')' '{' stmt '}' ELSE '{' stmt '}' {$$ = newflow('I',2,$4,$7,$11,NULL,NULL);$$ = newast('S',$1,$$);}
+    | stmt WHILE '(' exp ')' '{' stmt '}' {$$ = newflow('W',1,$4,$7,NULL,NULL,NULL);$$ = newast('S',$1,$$);}
+    | stmt FOR '(' exp ';' exp ';' exp ')' '{' stmt '}' {$$ = newflow('F',2,$6,$11,NULL,$4,$8);$$ = newast('S',$1,$$);}
+    | stmt ERR { yyerror("One error ocurred");}
     | exp ';' {$$ = $1;}
     ;
+    
 calclist:
 	| calclist stmt {generate_code($2);}
    
@@ -273,7 +281,7 @@ char* generate_code(struct ast* a)
 		sprintf(s+strlen(s),"%s ",l);
 		l[0] = a->nodetype;
 		l[1] = '\0';
-		sprintf(s+strlen(s),"%s ",l);
+		sprintf(s+strlen(s),"%s",l);
 		sprintf(s+strlen(s),"%s",r);
 		break;
 		
@@ -287,18 +295,18 @@ char* generate_code(struct ast* a)
 		sprintf(rtn+strlen(rtn),"%d",varcounter);
 		sprintf(s+strlen(s),"%s",l);
 		if(((struct cmpnode*)a)->type==1)
-		sprintf(s+strlen(s)," > ");
+		sprintf(s+strlen(s)," >");
 		else if(((struct cmpnode*)a)->type==2)
-		sprintf(s+strlen(s)," < ");
+		sprintf(s+strlen(s)," <");
 		else if(((struct cmpnode*)a)->type==3)
-		sprintf(s+strlen(s)," >= ");
+		sprintf(s+strlen(s)," >=");
 		else if(((struct cmpnode*)a)->type==4)
-		sprintf(s+strlen(s)," <= ");
+		sprintf(s+strlen(s)," <=");
 		else if(((struct cmpnode*)a)->type==5)
-		sprintf(s+strlen(s)," == ");
+		sprintf(s+strlen(s)," ==");
 		else if(((struct cmpnode*)a)->type==6)
-		sprintf(s+strlen(s)," != ");
-		
+		sprintf(s+strlen(s)," !=");
+		varcounter++;
 		sprintf(s+strlen(s),"%s",r);
 		break;
 		
@@ -309,15 +317,16 @@ char* generate_code(struct ast* a)
 		sprintf(s,"%s",temp_var);
 		sprintf(s+strlen(s),"%d = ",varcounter);
 		sprintf(rtn,"%s",temp_var);
-		sprintf(rtn+strlen(rtn),"%d = ",varcounter);
+		sprintf(rtn+strlen(rtn),"%d ",varcounter);
 		if(((struct logical*)a)->l!=NULL)
 		sprintf(s+strlen(s),"%s",l);
 		if(((struct logical*)a)->type==1)
-		sprintf(s+strlen(s)," || ");
+		sprintf(s+strlen(s)," ||");
 		else if(((struct logical*)a)->type==2)
-		sprintf(s+strlen(s)," && ");
+		sprintf(s+strlen(s)," &&");
 		else if(((struct logical*)a)->type==3)
-		sprintf(s+strlen(s)," ! ");
+		sprintf(s+strlen(s)," !");
+		varcounter++;
 		sprintf(s+strlen(s),"%s",r);
 		break;
 		
@@ -328,15 +337,16 @@ char* generate_code(struct ast* a)
 		sprintf(s,"%s",temp_var);
 		sprintf(s+strlen(s),"%d = ",varcounter);
 		sprintf(rtn,"%s",temp_var);
-		sprintf(rtn+strlen(rtn),"%d = ",varcounter);
+		sprintf(rtn+strlen(rtn),"%d ",varcounter);
 		if(((struct bitwise*)a)->l!=NULL)
 		sprintf(s+strlen(s),"%s",l);
 		if(((struct bitwise*)a)->type==1)
-		sprintf(s+strlen(s)," | ");
+		sprintf(s+strlen(s)," |");
 		else if(((struct bitwise*)a)->type==2)
-		sprintf(s+strlen(s)," & ");
+		sprintf(s+strlen(s)," &");
 		else if(((struct bitwise*)a)->type==3)
-		sprintf(s+strlen(s)," ~ ");
+		sprintf(s+strlen(s)," ~");
+		varcounter++;
 		sprintf(s+strlen(s),"%s",r);
 		break;
 		
@@ -366,9 +376,10 @@ char* generate_code(struct ast* a)
 		l = strdup(generate_code(((struct flow*)a)->cond));
 		fprintf(yyout,"L%d: \n",labelcounter);
 		fprintf(yyout,"if (%s) goto L%d\ngoto L%d\nL%d: \n",l,labelcounter+1,labelcounter+2,labelcounter+1);
+		labelcounter+=3;
 		generate_code(((struct flow*)a)->s);
-		fprintf(yyout,"L%d: ",labelcounter+2);
-		labelcounter+=2;
+		fprintf(yyout,"L%d: ",st+2);
+		labelcounter++;
 		if(((struct flow*)a)->e!=NULL)
 		{
 			generate_code(((struct flow*)a)->e);
@@ -383,7 +394,7 @@ char* generate_code(struct ast* a)
 		generate_code(((struct flow*)a)->s);
 		fprintf(yyout,"goto L%d\n",st);
 		fprintf(yyout,"L%d: ",labelcounter+2);
-		labelcounter+=2;
+		labelcounter+=3;
 		break;
 		
 		case 'F':
@@ -396,7 +407,7 @@ char* generate_code(struct ast* a)
 		generate_code(((struct flow*)a)->inc);
 		fprintf(yyout,"goto L%d\n",st);
 		fprintf(yyout,"L%d: ",labelcounter+2);
-		labelcounter+=2;
+		labelcounter+=3;
 		break;
 		
 		case 'S':
