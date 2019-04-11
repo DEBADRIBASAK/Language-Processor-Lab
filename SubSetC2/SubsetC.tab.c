@@ -464,7 +464,7 @@ static const yytype_uint16 yyrline[] =
 {
        0,    51,    51,    52,    53,    54,    55,    56,    57,    58,
       59,    60,    61,   122,   159,   186,   213,   215,   217,   220,
-     223,   245,   265,   289,   306,   308,   309,   311,   312
+     223,   247,   267,   291,   308,   310,   311,   313,   314
 };
 #endif
 
@@ -1570,15 +1570,17 @@ yyreduce:
     	(yyval.e)->code+=label;
     	(yyval.e)->code+="\n";
     	(yyval.e)->code=(yyval.e)->code+(yyvsp[-5].e)->code+"\n";
+    	(yyval.e)->code = (yyval.e)->code+"goto l"+to_string(lable_counter)+"\n";
     	label+=": \n";
     	(yyval.e)->code+=label;
     	(yyval.e)->code+=(yyvsp[-1].e)->code;
+    	(yyval.e)->code = (yyval.e)->code+"\nl"+to_string(lable_counter++)+": \n";
     }
-#line 1578 "SubsetC.tab.c" /* yacc.c:1646  */
+#line 1580 "SubsetC.tab.c" /* yacc.c:1646  */
     break;
 
   case 21:
-#line 246 "SubsetC.y" /* yacc.c:1646  */
+#line 248 "SubsetC.y" /* yacc.c:1646  */
     {
     	string label;
     	label="l";
@@ -1598,11 +1600,11 @@ yyreduce:
     	label+=": \n";
     	(yyval.e)->code+=label;
     }
-#line 1602 "SubsetC.tab.c" /* yacc.c:1646  */
+#line 1604 "SubsetC.tab.c" /* yacc.c:1646  */
     break;
 
   case 22:
-#line 266 "SubsetC.y" /* yacc.c:1646  */
+#line 268 "SubsetC.y" /* yacc.c:1646  */
     {
     	string label1,label2;
     	label1="l";
@@ -1626,11 +1628,11 @@ yyreduce:
     	label2+=": \n";
     	(yyval.e)->code+=label2;
     }
-#line 1630 "SubsetC.tab.c" /* yacc.c:1646  */
+#line 1632 "SubsetC.tab.c" /* yacc.c:1646  */
     break;
 
   case 23:
-#line 290 "SubsetC.y" /* yacc.c:1646  */
+#line 292 "SubsetC.y" /* yacc.c:1646  */
     {
     	(yyval.e) = new Expression;
     	(yyval.e)->code = "";
@@ -1647,35 +1649,35 @@ yyreduce:
 
     	(yyval.e)->code = (yyval.e)->code+"goto "+label1+"\n"+label2+": \n";
     }
-#line 1651 "SubsetC.tab.c" /* yacc.c:1646  */
+#line 1653 "SubsetC.tab.c" /* yacc.c:1646  */
     break;
 
   case 24:
-#line 306 "SubsetC.y" /* yacc.c:1646  */
+#line 308 "SubsetC.y" /* yacc.c:1646  */
     {(yyval.e) = (yyvsp[0].e);}
-#line 1657 "SubsetC.tab.c" /* yacc.c:1646  */
+#line 1659 "SubsetC.tab.c" /* yacc.c:1646  */
     break;
 
   case 25:
-#line 308 "SubsetC.y" /* yacc.c:1646  */
+#line 310 "SubsetC.y" /* yacc.c:1646  */
     {printf("Here\n");if((yyvsp[0].s)!=NULL){cout<<"yes\n";}cout<<"Name = "<<(yyvsp[0].s)->name<<endl;(yyval.e) = new Expression;(yyval.e)->code = "";cout<<"Upto\n";(yyval.e)->code = (yyval.e)->code+string((yyvsp[0].s)->name)+" = 0";cout<<"Code = "<<(yyval.e)->code<<endl;}
-#line 1663 "SubsetC.tab.c" /* yacc.c:1646  */
+#line 1665 "SubsetC.tab.c" /* yacc.c:1646  */
     break;
 
   case 26:
-#line 309 "SubsetC.y" /* yacc.c:1646  */
+#line 311 "SubsetC.y" /* yacc.c:1646  */
     {(yyval.e) = new Expression;(yyval.e)->code = "";(yyval.e)->code = (yyval.e)->code+(yyvsp[-2].s)->name+" = 0\n";(yyval.e)->code+=(yyvsp[0].e)->code;}
-#line 1669 "SubsetC.tab.c" /* yacc.c:1646  */
+#line 1671 "SubsetC.tab.c" /* yacc.c:1646  */
     break;
 
   case 28:
-#line 312 "SubsetC.y" /* yacc.c:1646  */
+#line 314 "SubsetC.y" /* yacc.c:1646  */
     {fprintf(yyout,"%s",(yyvsp[-1].e)->code.c_str());}
-#line 1675 "SubsetC.tab.c" /* yacc.c:1646  */
+#line 1677 "SubsetC.tab.c" /* yacc.c:1646  */
     break;
 
 
-#line 1679 "SubsetC.tab.c" /* yacc.c:1646  */
+#line 1681 "SubsetC.tab.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -1903,7 +1905,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 315 "SubsetC.y" /* yacc.c:1906  */
+#line 317 "SubsetC.y" /* yacc.c:1906  */
 
 
 

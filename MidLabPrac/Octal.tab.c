@@ -62,15 +62,14 @@
 
 
 /* Copy the first part of user declarations.  */
-#line 1 "BisonPractice.y" /* yacc.c:339  */
+#line 1 "Octal.y" /* yacc.c:339  */
 
+	#include "Octal.tab.h"
 	#include <stdio.h>
-	#include <stdlib.h>
-	#include <math.h>
-	int yyerror(char* s);
-	extern int yylex();
+	int yyerror(char* s);extern int yylex();
+	int to_octal(int d);
 
-#line 74 "BisonPractice.tab.c" /* yacc.c:339  */
+#line 73 "Octal.tab.c" /* yacc.c:339  */
 
 # ifndef YY_NULLPTR
 #  if defined __cplusplus && 201103L <= __cplusplus
@@ -89,12 +88,12 @@
 #endif
 
 /* In a future release of Bison, this section will be replaced
-   by #include "BisonPractice.tab.h".  */
-#ifndef YY_YY_BISONPRACTICE_TAB_H_INCLUDED
-# define YY_YY_BISONPRACTICE_TAB_H_INCLUDED
+   by #include "Octal.tab.h".  */
+#ifndef YY_YY_OCTAL_TAB_H_INCLUDED
+# define YY_YY_OCTAL_TAB_H_INCLUDED
 /* Debug traces.  */
 #ifndef YYDEBUG
-# define YYDEBUG 1
+# define YYDEBUG 0
 #endif
 #if YYDEBUG
 extern int yydebug;
@@ -122,11 +121,11 @@ extern YYSTYPE yylval;
 
 int yyparse (void);
 
-#endif /* !YY_YY_BISONPRACTICE_TAB_H_INCLUDED  */
+#endif /* !YY_YY_OCTAL_TAB_H_INCLUDED  */
 
 /* Copy the second part of user declarations.  */
 
-#line 130 "BisonPractice.tab.c" /* yacc.c:358  */
+#line 129 "Octal.tab.c" /* yacc.c:358  */
 
 #ifdef short
 # undef short
@@ -368,16 +367,16 @@ union yyalloc
 /* YYFINAL -- State number of the termination state.  */
 #define YYFINAL  2
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   17
+#define YYLAST   13
 
 /* YYNTOKENS -- Number of terminals.  */
-#define YYNTOKENS  10
+#define YYNTOKENS  9
 /* YYNNTS -- Number of nonterminals.  */
 #define YYNNTS  3
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  9
+#define YYNRULES  8
 /* YYNSTATES -- Number of states.  */
-#define YYNSTATES  16
+#define YYNSTATES  14
 
 /* YYTRANSLATE[YYX] -- Symbol number corresponding to YYX as returned
    by yylex, with out-of-bounds checking.  */
@@ -397,7 +396,7 @@ static const yytype_uint8 yytranslate[] =
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     7,     5,     2,     6,     2,     8,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
-       2,     2,     2,     2,     9,     2,     2,     2,     2,     2,
+       2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
@@ -423,7 +422,7 @@ static const yytype_uint8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    16,    16,    17,    19,    20,    21,    22,    23,    24
+       0,    15,    15,    16,    18,    19,    20,    21,    22
 };
 #endif
 
@@ -433,7 +432,7 @@ static const yytype_uint8 yyrline[] =
 static const char *const yytname[] =
 {
   "$end", "error", "$undefined", "NUM", "EOL", "'+'", "'-'", "'*'", "'/'",
-  "'@'", "$accept", "calclist", "exp", YY_NULLPTR
+  "$accept", "calclist", "exp", YY_NULLPTR
 };
 #endif
 
@@ -442,7 +441,7 @@ static const char *const yytname[] =
    (internal) symbol number NUM (which must be that of a token).  */
 static const yytype_uint16 yytoknum[] =
 {
-       0,   256,   257,   258,   259,    43,    45,    42,    47,    64
+       0,   256,   257,   258,   259,    43,    45,    42,    47
 };
 # endif
 
@@ -460,8 +459,8 @@ static const yytype_uint16 yytoknum[] =
      STATE-NUM.  */
 static const yytype_int8 yypact[] =
 {
-      -5,    11,    -5,    -5,    -4,    -5,     9,     9,     9,     9,
-       9,     8,     8,     4,     4,     4
+      -5,     9,    -5,    -5,    -4,    -5,    10,    10,    10,    10,
+       3,     3,    -5,    -5
 };
 
   /* YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
@@ -470,13 +469,13 @@ static const yytype_int8 yypact[] =
 static const yytype_uint8 yydefact[] =
 {
        2,     0,     1,     4,     0,     3,     0,     0,     0,     0,
-       0,     7,     8,     5,     6,     9
+       5,     6,     7,     8
 };
 
   /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int8 yypgoto[] =
 {
-      -5,    -5,     0
+      -5,    -5,    -1
 };
 
   /* YYDEFGOTO[NTERM-NUM].  */
@@ -490,34 +489,34 @@ static const yytype_int8 yydefgoto[] =
      number is the opposite.  If YYTABLE_NINF, syntax error.  */
 static const yytype_uint8 yytable[] =
 {
-       5,     6,     7,     8,     9,    10,    11,    12,    13,    14,
-      15,     2,     3,    10,     3,     8,     9,    10
+       5,     6,     7,     8,     9,    10,    11,    12,    13,     2,
+       8,     9,     3,     3
 };
 
 static const yytype_uint8 yycheck[] =
 {
-       4,     5,     6,     7,     8,     9,     6,     7,     8,     9,
-      10,     0,     3,     9,     3,     7,     8,     9
+       4,     5,     6,     7,     8,     6,     7,     8,     9,     0,
+       7,     8,     3,     3
 };
 
   /* YYSTOS[STATE-NUM] -- The (internal number of the) accessing
      symbol of state STATE-NUM.  */
 static const yytype_uint8 yystos[] =
 {
-       0,    11,     0,     3,    12,     4,     5,     6,     7,     8,
-       9,    12,    12,    12,    12,    12
+       0,    10,     0,     3,    11,     4,     5,     6,     7,     8,
+      11,    11,    11,    11
 };
 
   /* YYR1[YYN] -- Symbol number of symbol that rule YYN derives.  */
 static const yytype_uint8 yyr1[] =
 {
-       0,    10,    11,    11,    12,    12,    12,    12,    12,    12
+       0,     9,    10,    10,    11,    11,    11,    11,    11
 };
 
   /* YYR2[YYN] -- Number of symbols on the right hand side of rule YYN.  */
 static const yytype_uint8 yyr2[] =
 {
-       0,     2,     0,     3,     1,     3,     3,     3,     3,     3
+       0,     2,     0,     3,     1,     3,     3,     3,     3
 };
 
 
@@ -1194,43 +1193,43 @@ yyreduce:
   switch (yyn)
     {
         case 3:
-#line 17 "BisonPractice.y" /* yacc.c:1646  */
-    {printf("The value is: %d\n",(yyvsp[-1]));}
-#line 1200 "BisonPractice.tab.c" /* yacc.c:1646  */
+#line 16 "Octal.y" /* yacc.c:1646  */
+    {printf(" = %d\n",to_octal((yyvsp[-1])));}
+#line 1199 "Octal.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 4:
+#line 18 "Octal.y" /* yacc.c:1646  */
+    {(yyval) = (yyvsp[0]);}
+#line 1205 "Octal.tab.c" /* yacc.c:1646  */
     break;
 
   case 5:
-#line 20 "BisonPractice.y" /* yacc.c:1646  */
-    { (yyval) = (yyvsp[-2])*(yyvsp[0]);}
-#line 1206 "BisonPractice.tab.c" /* yacc.c:1646  */
+#line 19 "Octal.y" /* yacc.c:1646  */
+    {(yyval) = (yyvsp[-2])+(yyvsp[0]);}
+#line 1211 "Octal.tab.c" /* yacc.c:1646  */
     break;
 
   case 6:
-#line 21 "BisonPractice.y" /* yacc.c:1646  */
-    { (yyval) = (yyvsp[-2])/(yyvsp[0]);}
-#line 1212 "BisonPractice.tab.c" /* yacc.c:1646  */
+#line 20 "Octal.y" /* yacc.c:1646  */
+    {(yyval) = (yyvsp[-2])-(yyvsp[0]);}
+#line 1217 "Octal.tab.c" /* yacc.c:1646  */
     break;
 
   case 7:
-#line 22 "BisonPractice.y" /* yacc.c:1646  */
-    { (yyval) = (yyvsp[-2])+(yyvsp[0]);}
-#line 1218 "BisonPractice.tab.c" /* yacc.c:1646  */
+#line 21 "Octal.y" /* yacc.c:1646  */
+    {(yyval) = (yyvsp[-2])*(yyvsp[0]);}
+#line 1223 "Octal.tab.c" /* yacc.c:1646  */
     break;
 
   case 8:
-#line 23 "BisonPractice.y" /* yacc.c:1646  */
-    { (yyval) = (yyvsp[-2])-(yyvsp[0]);}
-#line 1224 "BisonPractice.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 9:
-#line 24 "BisonPractice.y" /* yacc.c:1646  */
-    {(yyval) = (int)pow((yyvsp[-2]),(yyvsp[0]));}
-#line 1230 "BisonPractice.tab.c" /* yacc.c:1646  */
+#line 22 "Octal.y" /* yacc.c:1646  */
+    {(yyval) = (yyvsp[-2])/(yyvsp[0]);}
+#line 1229 "Octal.tab.c" /* yacc.c:1646  */
     break;
 
 
-#line 1234 "BisonPractice.tab.c" /* yacc.c:1646  */
+#line 1233 "Octal.tab.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -1458,18 +1457,29 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 26 "BisonPractice.y" /* yacc.c:1906  */
+#line 24 "Octal.y" /* yacc.c:1906  */
 
-
-int main()
-{
-	yydebug = 1;
- 	yyparse();
-	return 0;
-}
 int yyerror(char* s)
 {
-	yydebug = 1;
 	printf("ERROR: %s\n",s);
-	return 0;
+}
+int to_octal(int d)
+{
+	int rtn = 0;
+	while(d>0)
+	{
+		rtn = rtn*10+(d%8);
+		d/=8;
+	}
+	int r = 0;
+	while(rtn>0)
+	{
+		r = r*10+(rtn%10);
+		rtn/=10;
+	}
+	return r;
+}
+int main()
+{
+	yyparse();
 }

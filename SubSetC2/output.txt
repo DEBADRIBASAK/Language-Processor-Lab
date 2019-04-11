@@ -3,9 +3,13 @@ b = 0
 c = 0
 
 a = 10
-
-
-t1 = a*12
-b = t1
-t2 = ~b
-c = t2
+l1: 
+t1 = a>5
+if (t1) == 0 goto l2
+t2 = a&12
+b = t2
+goto l3
+l2: 
+t3 = a|15
+c = t3
+l3: 

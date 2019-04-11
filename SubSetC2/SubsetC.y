@@ -238,9 +238,11 @@ stmt: stmt ';' stmt {$$ = new Expression;if($3==NULL)
     	$$->code+=label;
     	$$->code+="\n";
     	$$->code=$$->code+$6->code+"\n";
+    	$$->code = $$->code+"goto l"+to_string(lable_counter)+"\n";
     	label+=": \n";
     	$$->code+=label;
     	$$->code+=$10->code;
+    	$$->code = $$->code+"\nl"+to_string(lable_counter++)+": \n";
     }
     | IF '(' exp ')' '{' stmt '}' 
     {
