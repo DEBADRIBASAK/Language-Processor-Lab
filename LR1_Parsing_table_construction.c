@@ -14,6 +14,7 @@ struct Item
 {
 	int dotposition;
 	struct Rules r;
+	int lookahead[255];
 	int f;
 };
 
@@ -68,26 +69,98 @@ int is_item_in(struct State* l,struct Rules r,int dot)
 	for(int i=0;i<l->len;i++)
 	{
 		if((l->itm[i].dotposition==dot)&&(l->itm[i].r.var==r.var)&&(strcmp(l->itm[i].r.der,r.der)==0))
+			return i;
+	}
+	return -1;
+}
+
+int is_item_in_advanced(struct State* l,struct Rules r,int dot,int* bit)
+{
+	int f = 0;
+	for(int i=0;i<l->len;i++)
+	{
+		f = 1;
+		for(int j=0;j<255;j++)
+		{
+			if(bit[j]!=l->itm[i].lookahead[j])
+			{
+				f = 0;break;
+			}
+		}
+		if(f&&(l->itm[i].dotposition==dot)&&(l->itm[i].r.var==r.var)&&(strcmp(l->itm[i].r.der,r.der)==0))
 			return 1;
 	}
 	return 0;
 }
 
+void fill_lookaheads(int* bit,struct Item* l)
+{
+	int length = strlen(l->r.der+l->dotposition+1);
+	char sto;int f = 0;
+	for(int i=l->dotposition+1;i<l->dotposition+length+1;i++)
+	{
+		if(l->r.der[i]=='\0')
+			continue;
+		if(l->r.der[i]<'A'||l->r.der[i]>'Z')
+		{
+			//printf("c = %c\n",l->r.der[i]);
+			bit[l->r.der[i]] = 1;
+			return;
+		}
+		for(int j=0;j<255;j++)
+		{
+			if(first[l->r.der[i]][j])
+			{
+				bit[j] = 1;
+			}
+		}
+		sto = l->r.der[i];
+		l->r.der[i] = '\0';
+		if(!is_nullable(l->r.der+l->dotposition+1))
+		{
+			l->r.der[i] = sto;
+		}
+		else
+		{
+			l->r.der[i] = sto;f = 1;break;
+		}
+	}
+	if(!f)
+	{
+		for(int i=0;i<255;i++)
+		{
+			if(l->lookahead[i])
+			bit[i] = 1;
+		}
+	}
+} 
+
 void build_state(struct State* l)
 {
+	int s;
 	for(int i=0;i<l->len;i++)
 	{
 		if(l->itm[i].r.der[l->itm[i].dotposition]>='A'&&l->itm[i].r.der[l->itm[i].dotposition]<='Z')
 		{
 			for(int j=0;j<n;j++)
 			{
-				if(!is_item_in(l,a[j],0)&&(a[j].var==l->itm[i].r.der[l->itm[i].dotposition]))
+				if((a[j].var==l->itm[i].r.der[l->itm[i].dotposition]))
 				{
-					l->itm[l->len].dotposition = 0;
-					l->itm[l->len].r = a[j];
-					l->itm[l->len].f = 0;
+					if((s = is_item_in(l,a[j],0))==-1)
+					{
+						l->itm[l->len].dotposition = 0;
+						l->itm[l->len].r = a[j];
+						l->itm[l->len].f = 0;
+						memset(l->itm[l->len].lookahead,0,255);
+						fill_lookaheads(l->itm[l->len].lookahead,&l->itm[i]);
+						l->len++;
+					}
+					else
+					{
+						// code to be added
+						fill_lookaheads(l->itm[s].lookahead,&l->itm[i]);
+					}
 
-					l->len++;
 				}
 			}
 		}
@@ -110,7 +183,7 @@ int state_already_included(struct list* l,struct State* s)
 		}
 		for(int i=0;i<s->len;i++)
 		{
-			if(!is_item_in(&q->data,s->itm[i].r,s->itm[i].dotposition))
+			if(!is_item_in_advanced(&q->data,s->itm[i].r,s->itm[i].dotposition,s->itm[i].lookahead))
 			{
 				f = 1;break;
 			}
@@ -134,7 +207,15 @@ void print_state(struct list* q)
 			q->data.itm[i].r.der[q->data.itm[i].dotposition] = '\0';
 			printf("%s.",q->data.itm[i].r.der);
 			q->data.itm[i].r.der[q->data.itm[i].dotposition] = sto;
-			printf("%s\n",q->data.itm[i].r.der+q->data.itm[i].dotposition);
+			printf("%s",q->data.itm[i].r.der+q->data.itm[i].dotposition);
+
+			printf(" { ");
+			for(int j=0;j<255;j++)
+			{
+				if(q->data.itm[i].lookahead[j])
+					printf("%c,",(char)j);
+			}
+			printf(" }\n");
 		}
 }
 int num=0;
@@ -161,6 +242,8 @@ void find_out_states(struct list* l)
 		t->data.len = 1;
 		t->data.itm[0].dotposition = l->data.itm[i].dotposition+1;
 		t->data.itm[0].r =  l->data.itm[i].r;
+		for(int ind=0;ind<255;ind++)
+					t->data.itm[0].lookahead[ind] = l->data.itm[i].lookahead[ind];
 		l->data.itm[i].f = 1;
 		for(int j=i+1;j<l->data.len;j++)
 		{
@@ -169,8 +252,12 @@ void find_out_states(struct list* l)
 				//t->data.len = 1;
 				t->data.itm[t->data.len].dotposition = l->data.itm[j].dotposition+1;
 				t->data.itm[t->data.len].r =  l->data.itm[j].r;
+				memset(t->data.itm[t->data.len].lookahead,0,255);
+				for(int ind=0;ind<255;ind++)
+					t->data.itm[t->data.len].lookahead[ind] = l->data.itm[j].lookahead[ind];
 				l->data.itm[j].f = 1;
 				t->data.len++;
+
 			}
 		}
 		build_state(&t->data);
@@ -264,7 +351,7 @@ void construct_table(struct Table** tab,int num)
 				int nn = find_rule(q->data.itm[j].r);
 				for(int l=0;l<255;l++)
 				{
-					if(follow[q->data.itm[j].r.var-'A'][l])
+					if(q->data.itm[j].lookahead[l])//if(follow[q->data.itm[j].r.var-'A'][l])
 					{
 						k = find(l);
 						if(tab[i][k].state_no==-1)
@@ -300,7 +387,8 @@ int main(int argc, char const *argv[])
 {
 	if(argc<2)
 	{
-		printf("Usage: %s [STARTING SYMBOL]\n",argv[0]);exit(0);
+		printf("Usage: %s [STARTING SYMBOL]\n",argv[0]);
+		exit(0);
 	}
 	printf("Enter the no of rules\n");
 	scanf("%d",&n);
@@ -435,10 +523,13 @@ int main(int argc, char const *argv[])
 
 
 	// finding the follow
+	printf("Here I am\n");
 
 	start = argv[1][0];
 
 	follow[start-'A']['$'] = 1; //sentinel
+
+	printf("Here too..\n");
 
 	do
 	{
@@ -508,6 +599,7 @@ int main(int argc, char const *argv[])
 		//printf("*\n");
 	}while(no_change);
 
+	printf("Here too..111\n");
 
 	// all prerocessing done!! now the actual part
 
@@ -523,13 +615,20 @@ int main(int argc, char const *argv[])
 
 	head->data.itm[0].dotposition = 0;
 	head->data.itm[0].f = 0;
+	memset(head->data.itm[0].lookahead,0,255);
+	head->data.itm[0].lookahead['$'] = 1;
+
+
+
 
 	for(int i=0;i<255;i++)
 	{
 		head->data.transition[i] = -1;
 	}
-
+	printf("Hey!!!\n");
 	build_state(&head->data);
+
+	printf("Here..222\n");
 
 	struct list* q;
 	q = head;
@@ -544,8 +643,10 @@ int main(int argc, char const *argv[])
 	head->next = NULL;
 
 	tail = head;num++;
-
+printf("Hrere1\n");
 	find_out_states(head);
+
+	printf("Hrere\n");
 
 	q = head;int num1 = 0;
 	while(q!=NULL)
@@ -595,6 +696,10 @@ int main(int argc, char const *argv[])
 		}
 		printf("\n");
 	}
+
+
+
+
 	// for(int i=0;i<n;i++)
 	// {
 	//   printf("%c :: %s\n",a[i].var,a[i].der);
@@ -613,6 +718,8 @@ int main(int argc, char const *argv[])
 	//     printf("\n");
 	//   }
 	// }
+
+
 	// for(int i=0;i<26;i++)
 	// {
 	//   if(variables[i]==1)
@@ -692,6 +799,16 @@ G
 (E)
 G
 i
+
+4
+S
+AB
+A
+aAb
+A
+a
+B
+d
 
 							 (       )       *       +       ^       i       $       E       F       G       T
 			0:      S5       -       -       -       -      S6       -      1      3      4      2
