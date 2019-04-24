@@ -72,7 +72,7 @@ int main(int argc, char const *argv[])
 	word+=tab[make_pair(word.back(),'$')];
 	word+="$";
 
-	cout<<word<<endl;//exit(0);
+	cout<<word<<endl;
 	int curr = 0,curr1;
 	while(1)
 	{
@@ -97,9 +97,6 @@ int main(int argc, char const *argv[])
 			cout<<v[rule].first<<" -> "<<v[rule].second<<endl;
 			for(int i=0;i<curr1;i++)
 				new_string+=word[i];
-			//new_string+=tab[make_pair(new_string.back(),variable)];
-			//new_string+=variable;
-			//new_string+=tab[make_pair(variable,word[curr+1])];
 			char add = tab[make_pair(new_string.back(),word[curr+1])];
 			if(add!='X')
 			new_string+=add;
