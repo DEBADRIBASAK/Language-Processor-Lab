@@ -37,10 +37,8 @@ int terminals[255] = {0};
 int nullable[26] = {0};
 
 char first[26][255] = {{0}};
-//int first_cnt[26] = {0};
 
 char follow[26][255] = {{0}};
-//int follow_cnt[26] = {0};
 
 char *var,*term;
 
@@ -93,19 +91,17 @@ int is_item_in_advanced(struct State* l,struct Rules r,int dot,int* bit)
 	return 0;
 }
 
+
 void fill_lookaheads(int* bit,struct Item* l)
 {
-	//printf("fill\n");
 	int length = strlen(l->r.der+l->dotposition+1);
 	char sto;int f = 0;
 	for(int i=l->dotposition+1;i<l->dotposition+length+1;i++)
 	{
-		//printf("+\n");
 		if(l->r.der[i]=='\0')
 			continue;
 		if(l->r.der[i]<'A'||l->r.der[i]>'Z')
 		{
-			//printf("c = %c\n",l->r.der[i]);
 			bit[l->r.der[i]] = 1;
 			return;
 		}
@@ -135,16 +131,13 @@ void fill_lookaheads(int* bit,struct Item* l)
 			bit[i] = 1;
 		}
 	}
-	//printf("fill_end\n");
 } 
 
 void build_state(struct State* l)
 {
 	int s;
-	//printf("start\n");
 	for(int i=0;i<l->len;i++)
 	{
-		//printf("*\n");
 		if(l->itm[i].r.der[l->itm[i].dotposition]>='A'&&l->itm[i].r.der[l->itm[i].dotposition]<='Z')
 		{
 			//printf("yes\n");
@@ -154,19 +147,15 @@ void build_state(struct State* l)
 				{
 					if((s = is_item_in(l,a[j],0))==-1)
 					{
-						printf("yeah\n");
 						l->itm[l->len].dotposition = 0;
 						l->itm[l->len].r = a[j];
 						l->itm[l->len].f = 0;
 						memset(l->itm[l->len].lookahead,0,255);
 						fill_lookaheads(l->itm[l->len].lookahead,&l->itm[i]);
-						printf("finish\n");
 						l->len++;
 					}
 					else
 					{
-						//printf("Nope\n");
-						// code to be added
 						fill_lookaheads(l->itm[s].lookahead,&l->itm[i]);
 					}
 
@@ -175,35 +164,6 @@ void build_state(struct State* l)
 		}
 	}
 }
-
-int state_already_included(struct list* l,struct State* s)
-{
-	struct list* q;
-	q = l;
-	int f,rtn = -1;int ind = 0;
-	while(q!=NULL)
-	{
-		f = 0;
-		if(q->data.len!=s->len)
-		{
-			q = q->next;
-			ind++;
-			continue;
-		}
-		for(int i=0;i<s->len;i++)
-		{
-			if(!is_item_in_advanced(&q->data,s->itm[i].r,s->itm[i].dotposition,s->itm[i].lookahead))
-			{
-				f = 1;break;
-			}
-		}
-		if(!f)
-			return ind;
-		ind++;q = q->next;
-	}
-	return -1;
-}
-
 
 void print_state(struct list* q)
 {
@@ -227,7 +187,67 @@ void print_state(struct list* q)
 			printf(" }\n");
 		}
 }
+
+
+int state_already_included(struct list* l,struct State* s)
+{
+	struct list* q;
+	q = l;
+	int f,rtn = -1;int ind = 0;
+	while(q!=NULL)
+	{
+		f = 0;
+		if(q->data.len!=s->len)
+		{
+			q = q->next;
+			ind++;
+			continue;
+		}
+		for(int i=0;i<s->len;i++)
+		{
+			if(is_item_in(&q->data,s->itm[i].r,s->itm[i].dotposition)==-1)
+			{
+				f = 1;break;
+			}
+
+		}
+		if(!f)
+		{
+			return ind;
+		}
+		ind++;q = q->next;
+	}
+	return -1;
+}
+
+
 int num=0;
+
+
+
+void add_lookaheads(struct list* l,int s,struct State* t)
+{
+	struct list* q;
+	q = l;
+	while(s--)
+		q = q->next;
+	for(int i=0;i<t->len;i++)
+	{
+		for(int j=0;j<q->data.len;j++)
+		{
+			if((t->itm[i].r.var==q->data.itm[j].r.var)&&(strcmp(t->itm[i].r.der,q->data.itm[j].r.der)==0)&&(t->itm[i].dotposition==q->data.itm[j].dotposition))
+			{
+				for(int k=0;k<255;k++)
+					if(t->itm[i].lookahead[k])
+						q->data.itm[j].lookahead[k] = 1;
+				break;
+			}
+		}
+	}
+}
+
+
+
 void find_out_states(struct list* l)
 {
 	if(l==NULL)
@@ -241,7 +261,7 @@ void find_out_states(struct list* l)
 			l->data.itm[i].f = 1;
 			continue;
 		}
-		//printf("here\n");
+		
 		struct list* t;
 		t = (struct list*)malloc(sizeof(struct list));
 		for(int ind=0;ind<255;ind++)
@@ -258,7 +278,7 @@ void find_out_states(struct list* l)
 		{
 			if(l->data.itm[j].r.der[l->data.itm[j].dotposition]==l->data.itm[i].r.der[l->data.itm[i].dotposition])
 			{
-				//t->data.len = 1;
+				
 				t->data.itm[t->data.len].dotposition = l->data.itm[j].dotposition+1;
 				t->data.itm[t->data.len].r =  l->data.itm[j].r;
 				memset(t->data.itm[t->data.len].lookahead,0,255);
@@ -288,6 +308,15 @@ void find_out_states(struct list* l)
 		else
 		{
 			l->data.transition[l->data.itm[i].r.der[l->data.itm[i].dotposition]] = s;
+
+
+			// the follwing function has to be implemented
+
+			print_state(t);
+
+			struct list *q = head;
+
+			add_lookaheads(head,s,&t->data);
 		}
 	}
 	find_out_states(l->next);
@@ -350,17 +379,14 @@ void construct_table(struct Table** tab,int num)
 			{
 				if(q->data.itm[j].r.var=='#')
 				{
-					//printf("hey!!!!\n");
-
 					k = find('$');
-					//printf("state: %d Column: %d\n",i,k);
 					tab[i][k].op = 'A';
 					tab[i][k].state_no = 0;continue;
 				}
 				int nn = find_rule(q->data.itm[j].r);
 				for(int l=0;l<255;l++)
 				{
-					if(q->data.itm[j].lookahead[l])//if(follow[q->data.itm[j].r.var-'A'][l])
+					if(q->data.itm[j].lookahead[l])
 					{
 						k = find(l);
 						if(tab[i][k].state_no==-1)
@@ -396,8 +422,8 @@ int main(int argc, char const *argv[])
 {
 	if(argc<2)
 	{
-	//	printf("Usage: %s [STARTING SYMBOL]\n",argv[0]);
-	//	exit(0);
+		printf("Usage: %s [STARTING SYMBOL]\n",argv[0]);
+		exit(0);
 	}
 	printf("Enter the no of rules\n");
 	scanf("%d",&n);
@@ -409,7 +435,6 @@ int main(int argc, char const *argv[])
 		scanf("%c",&a[i].var);
 		if(variables[a[i].var-'A'] != 1)
 		{
-			//printf("%d\n",a[i].var-'A');
 			variables[a[i].var-'A'] = 1;n_var++;
 		}
 		while(getchar()!='\n');
@@ -493,7 +518,6 @@ int main(int argc, char const *argv[])
 						a[i].der[j] = '\0';
 						if(is_nullable(a[i].der))
 						{
-							//printf("*\n");
 							a[i].der[j] = sto;
 							if(sto>='A'&&sto<='Z')
 							{
@@ -532,14 +556,9 @@ int main(int argc, char const *argv[])
 
 
 	// finding the follow
-	printf("Here I am\n");
-
-	start = 'S';//argv[1][0];
+	start = argv[1][0];
 
 	follow[start-'A']['$'] = 1; //sentinel
-
-	printf("Here too..\n");
-
 	do
 	{
 		no_change = 0;
@@ -554,12 +573,10 @@ int main(int argc, char const *argv[])
 
 					if(a[i].der[j]>='A'&&a[i].der[j]<='Z'&&is_nullable(a[i].der+j+1))
 					{
-						//printf("%c : %s\n",a[i].var,a[i].der);
 						for(int k=0;k<255;k++)
 						{
 							if(follow[a[i].var-'A'][k]&&!follow[a[i].der[j]-'A'][k])
 							{
-								//printf("k = %c",(char)k);
 								no_change = 1;
 								follow[a[i].der[j]-'A'][k] = 1;
 							}
@@ -580,7 +597,6 @@ int main(int argc, char const *argv[])
 								{
 									if(first[sto-'A'][l]&&!follow[a[i].der[j]-'A'][l])
 									{
-										//printf("l = %c",(char)l);
 										no_change = 1;
 										follow[a[i].der[j]-'A'][l] = 1;
 									}
@@ -590,7 +606,6 @@ int main(int argc, char const *argv[])
 							{
 								if(!follow[a[i].der[j]-'A'][sto])
 								{
-									//printf("sto = %c\n",sto);
 									no_change = 1;
 									follow[a[i].der[j]-'A'][sto] = 1;
 									break;
@@ -605,10 +620,7 @@ int main(int argc, char const *argv[])
 				}
 			}
 		}
-		//printf("*\n");
 	}while(no_change);
-
-	printf("Here too..111\n");
 
 	// all prerocessing done!! now the actual part
 
@@ -634,16 +646,11 @@ int main(int argc, char const *argv[])
 	{
 		head->data.transition[i] = -1;
 	}
-	printf("Hey!!!\n");
 	build_state(&head->data);
-
-	printf("Here..222\n");
-
 	struct list* q;
 	q = head;
 	for(int i=0;i<q->data.len;i++)
 		{
-			//printf("%c :: ",q->data.itm[i].r.var);
 			if(q->data.itm[i].r.der[0]=='@')
 				q->data.itm[i].r.der[0] = '\0';
 		}
@@ -652,11 +659,7 @@ int main(int argc, char const *argv[])
 	head->next = NULL;
 
 	tail = head;num++;
-printf("Hrere1\n");
 	find_out_states(head);
-
-	printf("Hrere\n");
-
 	q = head;int num1 = 0;
 	while(q!=NULL)
 	{
@@ -709,6 +712,52 @@ printf("Hrere1\n");
 
 
 
+	char word[100];
+
+	int stack[500],top = -1;
+	ind = 0;
+
+
+
+
+	printf("Enter a word to see the derivation\n");
+
+	scanf("%s",word);
+
+	strcat(word,"$");
+
+
+	stack[++top] = 0;
+
+	while(1)
+	{
+		int ff = find(word[ind]);
+		if(tab[stack[top]][ff].state_no==-1)
+		{
+			printf("ERROR While parsing!\n");exit(0);
+		}
+		if(tab[stack[top]][ff].op=='S')
+		{
+			printf("Shifting %c and pushing %d\n",word[ind],tab[stack[top]][ff].state_no);
+			stack[top+1] = term[ff];
+			stack[top+2] = tab[stack[top]][ff].state_no;top+=2;ind++;
+		}
+		else if(tab[stack[top]][ff].op=='A')
+		{
+			printf("Accepted\n");break;
+		}
+		else
+		{
+			char sto = a[tab[stack[top]][ff].state_no-1].var;
+			printf("%c --> %s\n",a[tab[stack[top]][ff].state_no-1].var,a[tab[stack[top]][ff].state_no-1].der);
+			top = top-2*strlen(a[tab[stack[top]][ff].state_no-1].der);
+			stack[top+1] = sto;
+			stack[top+2] = tab[stack[top]][find(sto)].state_no;top+=2;
+		}
+	}
+
+
+
 	// for(int i=0;i<n;i++)
 	// {
 	//   printf("%c :: %s\n",a[i].var,a[i].der);
@@ -748,6 +797,7 @@ printf("Hrere1\n");
 
 /*
 
+
 3
 S
 CC
@@ -755,8 +805,6 @@ C
 cC
 C
 d
-
-
 
 
 5
