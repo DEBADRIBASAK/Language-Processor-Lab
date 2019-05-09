@@ -37,11 +37,7 @@ int terminals[255] = {0};
 int nullable[26] = {0};
 
 char first[26][255] = {{0}};
-//int first_cnt[26] = {0};
-
 char follow[26][255] = {{0}};
-//int follow_cnt[26] = {0};
-
 char *var,*term;
 
 char start;
@@ -396,8 +392,8 @@ int main(int argc, char const *argv[])
 {
 	if(argc<2)
 	{
-	//	printf("Usage: %s [STARTING SYMBOL]\n",argv[0]);
-	//	exit(0);
+		printf("Usage: %s [STARTING SYMBOL]\n",argv[0]);
+		exit(0);
 	}
 	printf("Enter the no of rules\n");
 	scanf("%d",&n);
@@ -652,11 +648,7 @@ int main(int argc, char const *argv[])
 	head->next = NULL;
 
 	tail = head;num++;
-printf("Hrere1\n");
 	find_out_states(head);
-
-	printf("Hrere\n");
-
 	q = head;int num1 = 0;
 	while(q!=NULL)
 	{
@@ -707,8 +699,6 @@ printf("Hrere1\n");
 	}
 
 
-
-
 	// for(int i=0;i<n;i++)
 	// {
 	//   printf("%c :: %s\n",a[i].var,a[i].der);
@@ -756,6 +746,15 @@ cC
 C
 d
 
+4
+S
+S+S
+S
+S*S
+S
+(S)
+S
+d
 
 
 

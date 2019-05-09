@@ -187,7 +187,6 @@ void find_out_states(struct list* l)
 				if(t->data.itm[i].r.der[0]=='@')
 					t->data.itm[i].r.der[0] = '\0';
 			}
-
 		}
 		else
 		{

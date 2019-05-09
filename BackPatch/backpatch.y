@@ -270,8 +270,8 @@ sent:  {$$ = new sentinel;
 	}
     ;
 next_sent: { $$ = new Expression;
-		cout<<line_no<<" : "<<"goto";
-		$$->nextlist = makelist();cout<<"    \n";line_no++;}
+		fout<<line_no<<" : "<<"goto";
+		$$->nextlist = makelist();fout<<"    \n";line_no++;}
 calclist:  
 	| MAIN '{' stmt '}' {cout<<"Parsing Complete!!!!"<<endl;};
 	;

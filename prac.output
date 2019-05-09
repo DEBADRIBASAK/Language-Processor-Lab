@@ -1,0 +1,130 @@
+Grammar
+
+    0 $accept: calclist $end
+
+    1 calclist: %empty
+    2         | calclist T EOL
+
+    3 T: F T1
+
+    4 T1: '*' F T1
+    5   | %empty
+
+    6 F: NUM
+
+
+Terminals, with rules where they appear
+
+$end (0) 0
+'*' (42) 4
+error (256)
+NUM (258) 6
+EOL (259) 2
+
+
+Nonterminals, with rules where they appear
+
+$accept (6)
+    on left: 0
+calclist (7)
+    on left: 1 2, on right: 0 2
+T (8)
+    on left: 3, on right: 2
+T1 (9)
+    on left: 4 5, on right: 3 4
+F (10)
+    on left: 6, on right: 3 4
+
+
+State 0
+
+    0 $accept: . calclist $end
+
+    $default  reduce using rule 1 (calclist)
+
+    calclist  go to state 1
+
+
+State 1
+
+    0 $accept: calclist . $end
+    2 calclist: calclist . T EOL
+
+    $end  shift, and go to state 2
+    NUM   shift, and go to state 3
+
+    T  go to state 4
+    F  go to state 5
+
+
+State 2
+
+    0 $accept: calclist $end .
+
+    $default  accept
+
+
+State 3
+
+    6 F: NUM .
+
+    $default  reduce using rule 6 (F)
+
+
+State 4
+
+    2 calclist: calclist T . EOL
+
+    EOL  shift, and go to state 6
+
+
+State 5
+
+    3 T: F . T1
+
+    '*'  shift, and go to state 7
+
+    $default  reduce using rule 5 (T1)
+
+    T1  go to state 8
+
+
+State 6
+
+    2 calclist: calclist T EOL .
+
+    $default  reduce using rule 2 (calclist)
+
+
+State 7
+
+    4 T1: '*' . F T1
+
+    NUM  shift, and go to state 3
+
+    F  go to state 9
+
+
+State 8
+
+    3 T: F T1 .
+
+    $default  reduce using rule 3 (T)
+
+
+State 9
+
+    4 T1: '*' F . T1
+
+    '*'  shift, and go to state 7
+
+    $default  reduce using rule 5 (T1)
+
+    T1  go to state 10
+
+
+State 10
+
+    4 T1: '*' F T1 .
+
+    $default  reduce using rule 4 (T1)
